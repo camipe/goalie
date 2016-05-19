@@ -1,7 +1,11 @@
 contract Goalie {
 
     /* STATE */
-    Goal[] public goals;
+    Goal[] public goals; //TODO: Change to uint ID-mapping
+    uint totalGoals;
+
+    /* EVENTS */
+    event GoalAdded(uint goalID, address owner, string description);
 
     /* TYPES */
     struct Goal {
@@ -9,7 +13,8 @@ contract Goalie {
         string title;
         string description;
         uint timeLimit; // Not implemented yet
-        address trustee;
+        Status status;
+        /*Trustee[] trustee;*/
         address beneficiary;
     }
 
@@ -17,6 +22,8 @@ contract Goalie {
         address id;
         bool approved;
     }
+
+    enum Status { InProgress, Complete, Failed }
 
     /* CONSTRUCTOR */
     function Goalie() {
@@ -27,12 +34,12 @@ contract Goalie {
 
     /* Add a new goal to the contract. */
     function addGoal(
-        address beneficiary,
         string title,
         string description,
-        address trustee
+        address beneficiary,
+        address[] trustees
     )
-        returns (uint goalID)
+        public returns (uint goalID)
     {
         goalID = goals.length++;
         Goal g = goals[goalID];
@@ -41,18 +48,34 @@ contract Goalie {
         g.title = title;
         g.description = description;
         g.timeLimit = 0;
-        g.trustee = trustee;
+        g.status = Status.InProgress;
+        
+        /*g.trustee[0] = Trustee({id: trustee, approved: false});*/
         g.beneficiary = beneficiary;
+        GoalAdded(goalID, msg.sender, description);
+        totalGoals = goalID + 1;
     }
 
     /* Used by trustees to approve that a goal has been reached. */
-    function approveGoal(
-        uint goalID,
-        bool vote
-        ) {
-        // If sender address is not in Trustees throw;
+    function approveGoal(uint goalID) {
+        Goal g = goals[goalID];
 
-        // Update goal votes
+        // Throw if sender address is not trustee.
+        if (g.trustee[0].id != msg.sender) throw;
+        // Throw if goal not in progress.
+        if (g.status != Status.InProgress) throw;
+
+        // Change trustee's approval status
+        g.trustee[0].approved = true;
+
+    }
+
+    function updateStatus(uint goalID) {
+        Goal g = goals[goalID];
+
+        if (g.trustee[0].approved == false) throw;
+
+        g.status = Status.Complete;
     }
 
     /* Releases the funds to if goal has been approved by trustees
