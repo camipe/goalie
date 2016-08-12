@@ -12,18 +12,14 @@ contract Goalie {
         address owner;
         string title;
         string description;
-        uint timeLimit; // Not implemented yet
+        uint amount;
+        uint deadline;
         Status status;
-        /*Trustee[] trustee;*/
+        address trustee;
         address beneficiary;
     }
 
-    struct Trustee{
-        address id;
-        bool approved;
-    }
-
-    enum Status { InProgress, Complete, Failed }
+    enum Status { InProgress, Approved, Complete, Failed }
 
     /* CONSTRUCTOR */
     function Goalie() {
@@ -37,7 +33,8 @@ contract Goalie {
         string title,
         string description,
         address beneficiary,
-        address[] trustees
+        address trustee,
+        uint timeLimitInDays
     )
         public returns (uint goalID)
     {
@@ -47,10 +44,11 @@ contract Goalie {
         g.owner = msg.sender;
         g.title = title;
         g.description = description;
-        g.timeLimit = 0;
+        g.amount = msg.value;
+        g.deadline = now + timeLimitInDays * 1 days;
         g.status = Status.InProgress;
-        
-        /*g.trustee[0] = Trustee({id: trustee, approved: false});*/
+
+        g.trustee = trustee;
         g.beneficiary = beneficiary;
         GoalAdded(goalID, msg.sender, description);
         totalGoals = goalID + 1;
@@ -61,27 +59,28 @@ contract Goalie {
         Goal g = goals[goalID];
 
         // Throw if sender address is not trustee.
-        if (g.trustee[0].id != msg.sender) throw;
+        if (g.trustee != msg.sender) throw;
         // Throw if goal not in progress.
         if (g.status != Status.InProgress) throw;
 
         // Change trustee's approval status
-        g.trustee[0].approved = true;
+        g.status = Status.Approved;
 
     }
 
-    function updateStatus(uint goalID) {
-        Goal g = goals[goalID];
-
-        if (g.trustee[0].approved == false) throw;
-
-        g.status = Status.Complete;
-    }
-
-    /* Releases the funds to if goal has been approved by trustees
+    /* Releases the funds to owner if goal has been approved by trustees
     else it releases to the beneficiary.
     Can only be called when timelimit has been reached. */
-    function releaseFunds() {
+    function releaseFunds(uint goalID) {
+        Goal g = goals[goalID];
+
+        if (g.deadline > now) throw;
+
+        if (g.status == Status.Approved) {
+            g.owner.send(g.amount);
+        } else {
+            g.beneficiary.send(g.amount);
+        }
 
     }
     /* Destroys the contract and releases all funds. */

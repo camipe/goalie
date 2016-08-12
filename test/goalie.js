@@ -1,0 +1,3 @@
+contract('Goalie', function(accounts) {
+  
+}
