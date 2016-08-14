@@ -1,88 +1,89 @@
+import "./Goal.sol";
 contract Goalie {
 
     /* STATE */
-    Goal[] public goals; //TODO: Change to uint ID-mapping
-    uint totalGoals;
+    address owner;
+    mapping (address => User) users;
+    mapping (uint => address) goalChildren;
+    uint totalUsers;
 
     /* EVENTS */
     event GoalAdded(uint goalID, address owner, string description);
 
-    /* TYPES */
-    struct Goal {
-        address owner;
-        string title;
-        string description;
-        uint amount;
-        uint deadline;
-        Status status;
-        address trustee;
-        address beneficiary;
+    /* MODIFIERS */
+    modifier onlyUser {
+        User u = users[msg.sender];
+        if (u.id != msg.sender)
+                throw;
+        _
     }
 
-    enum Status { InProgress, Approved, Complete, Failed }
+
+    /* TYPES */
+    struct User {
+        address id;
+        string name;
+        address[] ownGoals;
+        address[] trusteeGoals;
+    }
 
     /* CONSTRUCTOR */
     function Goalie() {
-
+        owner = msg.sender;
     }
 
     /* FUNCTIONS */
-
-    /* Add a new goal to the contract. */
-    function addGoal(
-        string title,
-        string description,
-        address beneficiary,
-        address trustee,
-        uint timeLimitInDays
-    )
-        public returns (uint goalID)
-    {
-        goalID = goals.length++;
-        Goal g = goals[goalID];
-
-        g.owner = msg.sender;
-        g.title = title;
-        g.description = description;
-        g.amount = msg.value;
-        g.deadline = now + timeLimitInDays * 1 days;
-        g.status = Status.InProgress;
-
-        g.trustee = trustee;
-        g.beneficiary = beneficiary;
-        GoalAdded(goalID, msg.sender, description);
-        totalGoals = goalID + 1;
+    function registerUser(string _name) {
+        User u = users[msg.sender];
+        if(u.id != 0x0) throw;
+        u.id = msg.sender;
+        u.name = _name;
     }
 
-    /* Used by trustees to approve that a goal has been reached. */
-    function approveGoal(uint goalID) {
-        Goal g = goals[goalID];
-
-        // Throw if sender address is not trustee.
-        if (g.trustee != msg.sender) throw;
-        // Throw if goal not in progress.
-        if (g.status != Status.InProgress) throw;
-
-        // Change trustee's approval status
-        g.status = Status.Approved;
+    function getUser() {
 
     }
 
-    /* Releases the funds to owner if goal has been approved by trustees
-    else it releases to the beneficiary.
-    Can only be called when timelimit has been reached. */
-    function releaseFunds(uint goalID) {
-        Goal g = goals[goalID];
+    function createGoal(
+        string _title,
+        string _description,
+        address _beneficiary,
+        address _trustee,
+        uint _timeLimitInDays
+    ) onlyUser {
+        // Create the new goal
+        address goalAddress = new Goal(
+            msg.sender,
+            _title,
+            _description,
+            _beneficiary,
+            _trustee,
+            _timeLimitInDays
+        );
 
-        if (g.deadline > now) throw;
-
-        if (g.status == Status.Approved) {
-            g.owner.send(g.amount);
-        } else {
-            g.beneficiary.send(g.amount);
-        }
 
     }
+
+	function saveGoalAddressToUser(address _userID,
+                                   address _goalAddress) private {
+        User u = users[_userID];
+        u.ownGoals.push(_goalAddress);
+    }
+
+    function saveGoalAddressToTrustee(address _trusteeID,
+                                      address _goalAddress) private {
+        User u = users[_trusteeID];
+        u.trusteeGoals.push(_goalAddress);
+    }
+
+    function approveGoal() {
+
+    }
+
+    function getGoalAddressFromID() {
+
+    }
+
     /* Destroys the contract and releases all funds. */
     function destroy() {
 

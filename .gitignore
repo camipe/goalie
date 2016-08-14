@@ -7,3 +7,4 @@ environments/staging/build
 environments/staging/contracts
 environments/test/build
 environments/test/contracts
+mix/

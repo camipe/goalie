@@ -51,6 +51,6 @@ window.onload = function() {
     accounts = accs;
     account = accounts[0];
 
-    Goalie.deployed();
+    refreshBalance();
   });
 }
