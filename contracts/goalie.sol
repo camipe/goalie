@@ -4,11 +4,10 @@ contract Goalie {
     /* STATE */
     address owner;
     mapping (address => User) users;
-    mapping (uint => address) goalChildren;
     uint totalUsers;
 
     /* EVENTS */
-    event GoalAdded(uint goalID, address owner, string description);
+    event GoalCreated(address user, address goalAddress, string title string description);
 
     /* MODIFIERS */
     modifier onlyUser {
@@ -40,8 +39,12 @@ contract Goalie {
         u.name = _name;
     }
 
-    function getUser() {
-
+    function getOwnUser() returns (address id, string name, address[] ownGoals, address[] trusteeGoals) {
+        User u = users[msg.sender];
+        id = u.id;
+        name = u.name;
+        ownGoals = u.ownGoals;
+        trusteeGoals = u.trusteeGoals;
     }
 
     function createGoal(
@@ -61,7 +64,10 @@ contract Goalie {
             _timeLimitInDays
         );
 
+        saveGoalAddressToUser(msg.sender, goalAddress);
+        saveGoalAddressToTrustee(_trustee, goalAddress);
 
+        GoalCreated(msg.sender, goalAddress, _title, _description);
     }
 
 	function saveGoalAddressToUser(address _userID,
@@ -76,13 +82,23 @@ contract Goalie {
         u.trusteeGoals.push(_goalAddress);
     }
 
-    function approveGoal() {
-
+    function approveGoal(address _goalAddress) {
+        Goal g = Goal(_goalAddress);
+        g.call;
     }
 
-    function getGoalAddressFromID() {
-
+    function transferToUser(address _goalAddress) {
+        Goal g = Goal(_goalAddress);
+        if (g.user != msg.sender) throw;
+        g.transferToUser();
     }
+
+    function transferToBeneficiary(address _goalAddress) {
+        Goal g = Goal(_goalAddress);
+        if (g.trustee != msg.sender) throw;
+        g.transferToUser();
+    }
+
 
     /* Destroys the contract and releases all funds. */
     function destroy() {

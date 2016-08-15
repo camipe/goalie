@@ -1,15 +1,21 @@
 contract Goal {
     /* STATE */
     address parent;
-    address user;
-    address trustee;
-    address beneficiary;
-    string title;
-    string description;
-    uint amount;
-    uint deadline;
-    Status status;
+    address public user;
+    address public trustee;
+    address public beneficiary;
+    string public title;
+    string public description;
+    uint public amount;
+    uint public deadline;
+    Status public status;
 
+    /* MODIFIERS */
+    modifier onlyParent {
+        if (parent != msg.sender)
+                throw;
+        _
+    }
     enum Status { Active, Approved, Complete, Failed }
 
     /* CONSTRUCTOR */
@@ -34,9 +40,8 @@ contract Goal {
     }
 
     /* Used by trustees to approve that a goal has been reached. */
-    function approve() {
-        // Throw if sender address is not trustee.
-        if (trustee != msg.sender) throw;
+    function approve() onlyParent {
+
         // Throw if goal is not of status active.
         if (status != Status.Active) throw;
 
@@ -47,13 +52,19 @@ contract Goal {
     /* Releases the funds to owner if goal has been approved by trustees
     else it releases to the beneficiary.
     Can only be called when timelimit has been reached. */
-    function releaseFunds() {
+    function transferToUser() onlyParent {
         if (deadline > now) throw;
 
         if (status == Status.Approved) {
-            owner.send(amount);
+            user.send(amount);
             status = Status.Complete;
-        } else {
+        }
+    }
+
+    function transferToBeneficiary() onlyParent {
+        if (deadline > now) throw;
+
+        if (status != Status.Approved) {
             beneficiary.send(amount);
             status = Status.Failed;
         }
