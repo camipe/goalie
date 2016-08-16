@@ -7,7 +7,7 @@ contract Goalie {
     uint totalUsers;
 
     /* EVENTS */
-    event GoalCreated(address user, address goalAddress, string title string description);
+    event GoalCreated(address user, address goalAddress, string title, string description);
 
     /* MODIFIERS */
     modifier onlyUser {
@@ -89,13 +89,13 @@ contract Goalie {
 
     function transferToUser(address _goalAddress) {
         Goal g = Goal(_goalAddress);
-        if (g.user != msg.sender) throw;
+        if (g.user() != msg.sender) throw;
         g.transferToUser();
     }
 
     function transferToBeneficiary(address _goalAddress) {
         Goal g = Goal(_goalAddress);
-        if (g.trustee != msg.sender) throw;
+        if (g.trustee() != msg.sender) throw;
         g.transferToUser();
     }
 

@@ -1,10 +1,3 @@
 node_modules/
-environments/development/build
-environments/development/contracts
-environments/production/build
-environments/production/contracts
-environments/staging/build
-environments/staging/contracts
-environments/test/build
-environments/test/contracts
+build/
 mix/
