@@ -2,6 +2,48 @@ var accounts;
 var account;
 var balance;
 
+function renderUserInfo() {
+  var goalie = Goalie.deployed();
+  goalie.getOwnUser.call({from: account}).then(function(user) {
+    console.log(user);
+    var userName = document.getElementById("userName");
+    var userID = document.getElementById("userID");
+    var userGoals = document.getElementById("userGoals");
+    var trusteeGoals = document.getElementById("trusteeGoals");
+
+    console.log(userName);
+    console.log(userID);
+    console.log(userGoals);
+    console.log(trusteeGoals);
+
+    userName.innerHTML = user[1];
+    userID.innerHTML = user[0]
+    userGoals.innerHTML = user[2];
+    trusteeGoals.innerHTML = user[3];
+
+  }).catch(function(e) {
+    console.log(e);
+  });
+
+}
+
+function renderOwnGoals() {
+
+}
+
+function renderOwnGoal() {
+
+}
+
+function renderTrusteeGoals() {
+
+}
+
+function renderTrusteeGoals() {
+
+}
+
+
 function setStatus(message) {
   var status = document.getElementById("status");
   status.innerHTML = message;
@@ -51,6 +93,6 @@ window.onload = function() {
     accounts = accs;
     account = accounts[0];
 
-    refreshBalance();
+    renderUserInfo()
   });
 }
