@@ -70,4 +70,22 @@ contract Goal {
         }
 
     }
+
+    function getGoalInfo() returns (
+        address user,
+        address trustee,
+        address beneficiary,
+        string title,
+        string description,
+        uint amount,
+        uint deadline) {
+
+        user = this.user;
+        trustee = this.trustee;
+        beneficiary = this.beneficiary;
+        title = this.title;
+        description = this.description;
+        amount = this.amount;
+        deadline = this.deadline;
+    }
 }
