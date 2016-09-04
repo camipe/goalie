@@ -16,8 +16,21 @@
             </div>
         </nav>
         <div class="container">
+            <div class="userForm">
+                <h3>Register User</h3>
+                <form class="form-inline">
+                  <div class="form-group">
+                    <label for="userNameInput">Name</label>
+                    <input type="text" class="form-control" id="userNameInput" placeholder="Name">
+                  </div>
+                  <button type="submit" onclick="registerUser()" class="btn btn-default">Register</button>
+                </form>
+            </div>
+
+            <hr>
+
             <div class="userinfo">
-                <h2>User info</h2>
+                <h3>User info</h3>
                 Name: <span id="userName"></span><br/>
                 Address: <span id="userID"></span><br/>
                 Total owned goals: <span id="nrUserGoals"></span><br/>

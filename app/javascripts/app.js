@@ -81,6 +81,21 @@ function renderTrusteeGoals() {
 
 }
 
+function registerUser() {
+  var goalie = Goalie.deployed();
+
+  var name = document.getElementById("userNameInput").value;
+
+  goalie.registerUser(name, {from: account}).then(function() {
+    console.log("Success!")
+  }).catch(function(e) {
+    console.log(e);
+  });
+}
+
+function createGoal() {
+
+}
 
 function setStatus(message) {
   var status = document.getElementById("status");
@@ -103,7 +118,7 @@ function sendCoin() {
   var meta = MetaCoin.deployed();
 
   var amount = parseInt(document.getElementById("amount").value);
-  var receiver = document.getElementById("receiver").value;
+  var receiver = document.getElementById("userNameInput").value;
 
   setStatus("Initiating transaction... (please wait)");
 

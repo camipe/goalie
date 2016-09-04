@@ -73,19 +73,15 @@ contract Goal {
 
     function getGoalInfo() returns (
         address user,
-        address trustee,
-        address beneficiary,
-        string title,
-        string description,
-        uint amount,
-        uint deadline) {
+        address trustee
+        ) {
 
         user = this.user;
         trustee = this.trustee;
-        beneficiary = this.beneficiary;
+        /*beneficiary = this.beneficiary;
         title = this.title;
         description = this.description;
         amount = this.amount;
-        deadline = this.deadline;
+        deadline = this.deadline;*/
     }
 }
