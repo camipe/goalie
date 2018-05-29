@@ -1,3 +1,2 @@
-node_modules/
-build/
-mix/
+node_modules
+.DS_STORE

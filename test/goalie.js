@@ -1,3 +1,0 @@
-contract('Goalie', function(accounts) {
-  
-}
