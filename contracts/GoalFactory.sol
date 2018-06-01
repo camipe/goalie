@@ -33,6 +33,10 @@ contract GoalFactory is Ownable {
     uint _amount, 
     uint _deadline) public {
     // just running internal create function, will probably add validation here
+
+    //TODO: convert _friends to mapping 
+
+    // TODO: handle payment
     _createGoal(_title, _description, _beneficiary, _friends, _amount, _deadline);
   }
 

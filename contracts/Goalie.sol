@@ -17,9 +17,15 @@ contract Goalie is GoalFactory {
     _;
   }
 
+  // TODO: modifier deadLinePassed()
+
+  // TODO: modifier goalApproved()
+
+  
+
   // approve goal
   function approveGoal(uint _goalId) public onlyGoalFriend(_goalId) returns (uint) {
-    
+    //TODO: start here
   }
 
   // pay out
