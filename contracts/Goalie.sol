@@ -3,16 +3,27 @@ import "./GoalFactory.sol";
 
 
 contract Goalie is GoalFactory {
-   
-  function notempty() public pure returns (uint) {
-    uint implemented = 0;
-    return implemented;
+
+  event GoalApproved(uint _goalId, string _title);
+
+  modifier onlyGoalOwner(uint _goalId) {
+    require(goalToOwner[_goalId] == msg.sender);
+    _;
   }
 
-  // user struct
-    // array with goals and friends goals
+  modifier onlyGoalFriend(uint _goalId) {
+    Goal storage goal = goals[_goalId];
+    require(goal.friends[msg.sender] == true);
+    _;
+  }
 
   // approve goal
+  function approveGoal(uint _goalId) public onlyGoalFriend(_goalId) returns (uint) {
+    
+  }
 
   // pay out
+  function completeGoal(uint _goalId) public onlyGoalOwner(_goalId) returns (uint) {
+    
+  }
 }

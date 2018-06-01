@@ -12,7 +12,7 @@ contract GoalFactory is Ownable {
     string description;
     address owner;
     address beneficiary;
-    address[] friends;
+    mapping (address => bool) friends;
     uint amount;
     uint deadline;
   }
