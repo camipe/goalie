@@ -1,4 +1,4 @@
-pragma solidity 0.4.20;
+pragma solidity 0.4.24; // solhint-disable-line
 import "./Ownable.sol";
 
 
@@ -45,7 +45,7 @@ contract GoalFactory is Ownable {
     uint _amount, 
     uint _deadline) internal {
     // create goal and update indexes
-    uint id = goals.push(Goal(_title, _description, msg.sender, _beneficiary, _friends, _amount, _deadline)) - 1;
+    uint id = goals.push(Goal(_title, _description, msg.sender, _beneficiary, _friends, _amount, _deadline));
     goalToOwner[id] = msg.sender;
     ownerGoalCount[msg.sender]++;
 
