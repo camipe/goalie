@@ -26,6 +26,11 @@ contract GoalFactory is Ownable {
   mapping (uint => address) public goalToOwner;
   mapping (address => uint) internal ownerGoalCount;
 
+  mapping (uint => address) public goalToBeneficiary;
+  mapping (address => uint) internal beneficiaryGoalCount;
+
+  mapping (address => uint) internal friendsGoalCount;
+
   // function addGoal()
   function addGoal(    
     string _title, 
@@ -48,8 +53,8 @@ contract GoalFactory is Ownable {
     address[] _friends, 
     uint _amount, 
     uint _deadline) internal {
+    address[] memory approvals;
     // create goal and update indexes
-    address[] storage approvals;
     uint id = goals.push(Goal(
       _title, 
       _description, 
@@ -59,11 +64,16 @@ contract GoalFactory is Ownable {
       _deadline, 
       _friends.length,
       approvals)) - 1;
+
     for (uint i = 0; i < _friends.length; i++) {
-      goals[id].friends[msg.sender] = true;
+      goals[id].friends[_friends[i]] = true;
+      friendsGoalCount[_friends[i]]++;
     }
+    
     goalToOwner[id] = msg.sender;
     ownerGoalCount[msg.sender]++;
+    goalToBeneficiary[id] = _beneficiary;
+    beneficiaryGoalCount[_beneficiary]++;
 
     emit NewGoal(id, _title);// solhint-disable-line
   }  
