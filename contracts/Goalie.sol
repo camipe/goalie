@@ -31,13 +31,14 @@ contract Goalie is GoalFactory {
 
   // approve goal
   function approveGoal(uint _goalId) public onlyGoalFriend(_goalId) returns (uint) {
-    //TODO: start here
     Goal storage goal = goals[_goalId];
     bool approve = true;
+    uint counter = 0;
     for (uint i = 0; i < goal.nrOfFriends; i++) {
-      if (goal.approvals[i] == msg.sender) {
+      if (goal.approvals[counter] == msg.sender) {
         approve = false;
       }
+      counter++;
     }
     if (approve = true) {
       goal.approvals.push(msg.sender);
@@ -46,10 +47,29 @@ contract Goalie is GoalFactory {
 
   // pay out
   function completepayOwnerGoal(uint _goalId) public onlyGoalOwner(_goalId) deadlinePassed(_goalId) returns (uint) {
-    
+    // require goalIsApproved
+    // pay out to goal.owner
   }
 
   function payBeneficiary(uint _goalId) public onlyGoalOwner(_goalId) deadlinePassed(_goalId) returns (uint) {
-    
+    // check goal is not Approved
+    // pay out to goal.beneficiary
   }
+
+  // TODO: getGoalsWhereOwner
+  function getGoalsByOwner(address _owner) {
+    uint[] memory result = new uint[](ownerGoalCount(_owner));
+    uint counter = 0;
+    for (uint i = 0; i < goals.length; i++) {
+      if (zombieToOwner[i] == _owner) {
+        result[counter] = i;
+        counter++;
+      }
+    }
+return result;
+  }
+
+  // TODO: getGoals where friend
+
+  // TODO: getgoals where beneficiary
 }
