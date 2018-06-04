@@ -37,12 +37,10 @@ contract GoalFactory is Ownable {
     string _description, 
     address _beneficiary, 
     address[] _friends,
-    uint _amount, 
-    uint _deadline) public {
-    // just running internal create function, will probably add validation here
-
-    // TODO: handle payment
-    _createGoal(_title, _description, _beneficiary, _friends, _amount, _deadline);
+    uint _deadline) public payable {
+    // make sure user payed something
+    require(msg.value > 0);
+    _createGoal(_title, _description, _beneficiary, _friends, msg.value, _deadline);
   }
 
   // function _createGoal()
