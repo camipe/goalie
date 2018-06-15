@@ -6,7 +6,7 @@ contract Goalie is GoalFactory {
 
   event GoalApproved(uint _goalId, string _title);
 
-  uint goalFee = 0.01 ether;
+  uint private goalFee = 0.01 ether;
 
   modifier onlyGoalOwner(uint _goalId) {
     require(goalToOwner[_goalId] == msg.sender);

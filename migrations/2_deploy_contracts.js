@@ -1,5 +1,5 @@
-var GoalFactory = artifacts.require("GoalFactory");
+var Goalie = artifacts.require("Goalie");
 
 module.exports = function(deployer) {
-  deployer.deploy(GoalFactory);
+  deployer.deploy(Goalie);
 };
