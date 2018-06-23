@@ -3,7 +3,7 @@ var Goalie = artifacts.require("./Goalie.sol");
 
 contract('Goalie', function(accounts) { 
 
-  it("...should add new goal", function() {
+  it("...add new goal", function() {
 
     // create goal object
     return Goalie.deployed().then(function(instance) {
@@ -22,4 +22,46 @@ contract('Goalie', function(accounts) {
 
     });
   });
+
+  it("...pay out to owner if approved and deadline has passed", function() {
+    throw Error;
+  });
+
+  it("...should pay out to beneficiary if approved and deadline has passed", function() {
+    
+  });
+
+  it("...should pay out to owner if approved and deadline has NOT passed", function() {
+    
+  });
+
+  it("...should NOT pay out to beneficiary if approved and deadline has NOT passed", function() {
+    
+  });
+
+  it("...friend should be able to approve goal", function() {
+    
+  });
+
+  it("...getGoalsByBeneficiary should return array of ids where address is beneficiary", function() {
+    
+  });
+
+  it("...getGoalsByFriend should return array of ids where address is friend", function() {
+    
+  });
+
+  it("...getGoalsByOwnery should return array of ids where address is owner", function() {
+    
+  });
+
+  it("...should not pay out twice to owner", function() {
+    
+  });
+
+  it("...should not pay out twice to beneficiary", function() {
+    
+  });
+
+  
 });
