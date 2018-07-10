@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import logo from '../../logo.png'
 
 import Goal from "../../goal/Goal";
 
 class Home extends Component {
-  constructor( props ) {
+  constructor( props, context ) {
     super( props )
+    
 
     // Apply background filters
     // document.getElementById( 'backgroundImage' ).setAttribute( 'style', '-webkit-filter: ' + C.BG_FILTER )
-
+    this.contracts = context.drizzle.contracts
     this.state = {
       testGoal: {
         title: "Testing",
@@ -23,6 +25,10 @@ class Home extends Component {
       }
     }
   }
+  async componentDidMount() {
+    let goal = await this.contracts.Goalie.methods.goals(0).call(); // TODO: Få fram varför i helvete den ger error
+    console.log(goal);
+  }
   render() {
     return (
       <main className="container">
@@ -31,17 +37,15 @@ class Home extends Component {
             <img src={logo} alt="drizzle-logo" />
             <Goal goal={this.state.testGoal}></Goal>
           </div>
-
-          {/* <div className="pure-u-1-1">
-            <h2>Goals</h2>
-            <p><strong>Stored Value</strong>: {this.Goalie.goals}</p>
-            <br/><br/>
-          </div> */}
         </div>
       </main>
     )
   }
   
+}
+
+Home.contextTypes = {
+  drizzle: PropTypes.object
 }
 
 export default Home
