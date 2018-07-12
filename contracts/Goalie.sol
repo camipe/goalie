@@ -14,14 +14,12 @@ contract Goalie is GoalFactory {
   }
 
   modifier onlyGoalFriend(uint _goalId) {
-    Goal storage goal = goals[_goalId];
-    require(goal.friends[msg.sender] == true);
+    require(goalToFriend[_goalId] == msg.sender);
     _;
   }
 
   modifier onlyBeneficiary(uint _goalId) {
-    Goal storage goal = goals[_goalId];
-    require(goal.beneficiary == msg.sender);
+    require(goalToBeneficiary[_goalId] == msg.sender);
     _;
   }
 
@@ -49,12 +47,9 @@ contract Goalie is GoalFactory {
     uint[] memory result = new uint[](friendsGoalCount[_friend]);
     uint counter = 0;
     for (uint i = 0; i < goals.length; i++) {
-      Goal storage goal = goals[i];
-      for (uint j = 0; j < goal.nrOfFriends; j++) {
-        if (goal.friends[_friend] == true) {
-          result[counter] = i;
-          counter++;
-        } 
+      if (goalToFriend[i] == _friend) {
+        result[counter] = i;
+        counter++;
       }
     }
     return result;
@@ -76,15 +71,7 @@ contract Goalie is GoalFactory {
   // approve goal
   function approveGoal(uint _goalId) public onlyGoalFriend(_goalId) returns (uint) {
     Goal storage goal = goals[_goalId];
-    bool approve = true;
-    for (uint i = 0; i < goal.nrOfFriends; i++) {
-      if (goal.approvals[i] == msg.sender) {
-        approve = false;
-      }
-    }
-    if (approve = true) {
-      goal.approvals.push(msg.sender);
-    }
+    goal.approved = true;
   }
 
   // pay out
@@ -92,22 +79,32 @@ contract Goalie is GoalFactory {
     Goal storage goal = goals[_goalId];
 
     // make sure goal is approved
-    require(goal.approvals.length == goal.nrOfFriends);
+    require(goal.approved == true);
+    require(goal.complete == false);
 
     // pay out to goal.owner
     address owner = goal.owner;
     owner.transfer(goal.amount - goalFee);
+
+    // TODO: Handle error before setting to complete
+
+    goal.complete = true;
   }
 
   function payBeneficiary(uint _goalId) public onlyBeneficiary(_goalId) deadlinePassed(_goalId) returns (uint) {
     Goal storage goal = goals[_goalId];
 
     // make sure goal is approved
-    require(goal.approvals.length < goal.nrOfFriends);
+    require(goal.approved == false);
+    require(goal.complete == false);
 
     // pay out to goal.owner
     address beneficiary = goal.beneficiary;
     beneficiary.transfer(goal.amount - goalFee);
+
+    // TODO: Handle error before setting to complete
+
+    goal.complete = true;
   }
 
 }

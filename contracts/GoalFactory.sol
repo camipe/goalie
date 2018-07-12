@@ -12,11 +12,11 @@ contract GoalFactory is Ownable {
     string description;
     address owner;
     address beneficiary;
+    address friend;
     uint amount;
     uint deadline;
-    uint nrOfFriends;
-    address[] approvals;
-    mapping (address => bool) friends;
+    bool approved;
+    bool complete;
   }
 
   // goal array
@@ -29,6 +29,7 @@ contract GoalFactory is Ownable {
   mapping (uint => address) public goalToBeneficiary;
   mapping (address => uint) internal beneficiaryGoalCount;
 
+  mapping (uint => address) public goalToFriend;
   mapping (address => uint) internal friendsGoalCount;
 
   // function addGoal()
@@ -36,11 +37,11 @@ contract GoalFactory is Ownable {
     string _title, 
     string _description, 
     address _beneficiary, 
-    address[] _friends,
+    address _friend,
     uint _deadline) public payable {
     // make sure user payed something
     require(msg.value > 0);
-    _createGoal(_title, _description, _beneficiary, _friends, msg.value, _deadline);
+    _createGoal(_title, _description, _beneficiary, _friend, msg.value, _deadline);
   }
 
   // function _createGoal()
@@ -48,30 +49,27 @@ contract GoalFactory is Ownable {
     string _title, 
     string _description, 
     address _beneficiary, 
-    address[] _friends, 
+    address _friend, 
     uint _amount, 
     uint _deadline) internal {
-    address[] memory approvals;
     // create goal and update indexes
     uint id = goals.push(Goal(
       _title, 
       _description, 
-      msg.sender, 
-      _beneficiary, 
-      _amount, 
-      _deadline, 
-      _friends.length,
-      approvals)) - 1;
-
-    for (uint i = 0; i < _friends.length; i++) {
-      goals[id].friends[_friends[i]] = true;
-      friendsGoalCount[_friends[i]]++;
-    }
+      msg.sender,
+      _beneficiary,
+      _friend,
+      _amount,
+      _deadline,
+      false,
+      false)) - 1;
     
     goalToOwner[id] = msg.sender;
     ownerGoalCount[msg.sender]++;
     goalToBeneficiary[id] = _beneficiary;
     beneficiaryGoalCount[_beneficiary]++;
+    goalToFriend[id] = _friend;
+    friendsGoalCount[_friend]++;
 
     emit NewGoal(id, _title);// solhint-disable-line
   }  
