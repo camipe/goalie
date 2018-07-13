@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import logo from '../../logo.png'
 
-class Home extends Component {
+import Goal from "../../goal/Goal";
+
+class FriendGoals extends Component {
   constructor( props, context ) {
     super( props )
     
@@ -29,8 +31,7 @@ class Home extends Component {
       <main className="container">
         <div className="pure-g">
           <div className="pure-u-1-1 header">
-            <img src={logo} alt="drizzle-logo" />
-            <h1>Home</h1>
+            FRIENDS
           </div>
         </div>
       </main>
@@ -39,8 +40,8 @@ class Home extends Component {
   
 }
 
-Home.contextTypes = {
+FriendGoals.contextTypes = {
   drizzle: PropTypes.object
 }
 
-export default Home
+export default FriendGoals;

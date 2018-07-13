@@ -44,10 +44,6 @@ ul {
   padding-left: 0;
 }
 
-ul li:not(:last-child) {
-  margin-bottom: 15px;
-}
-
 /* NAVBAR */
 
 .navbar {

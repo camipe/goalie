@@ -6,6 +6,9 @@ import { DrizzleProvider } from 'drizzle-react'
 
 // Layouts
 import App from './App'
+import MyGoals from './layouts/myGoals/MyGoals'
+import FriendGoals from './layouts/friendGoals/FriendGoals'
+import BeneficiaryGoals from './layouts/beneficiaryGoals/BeneficiaryGoals'
 import HomeContainer from './layouts/home/HomeContainer'
 import { LoadingContainer } from 'drizzle-react-components'
 
@@ -21,6 +24,9 @@ ReactDOM.render((
         <Router history={history}>
           <Route path="/" component={App}>
             <IndexRoute component={HomeContainer} />
+            <Route path="goals" component={MyGoals} />
+            <Route path="friends" component={FriendGoals} />
+            <Route path="beneficiary" component={BeneficiaryGoals} />
           </Route>
         </Router>
       </LoadingContainer>
