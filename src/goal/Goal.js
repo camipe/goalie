@@ -4,17 +4,19 @@ import PropTypes from 'prop-types';
 const Goal = (props) => {
   return (
     <div>
+      <h2>{props.goal.title}</h2>
       <p>
-        Title: {props.goal.title}<br/>
-        Description: {props.goal.description}<br/>
+        {props.goal.description}<br/>
         Beneficiary: {props.goal.beneficiary}<br/>
+        Friend: {props.goal.beneficiary}<br/>
         Amount: {props.goal.amount}<br/>
         Deadline:{props.goal.deadline}<br/>
-        {props.goal.approvals.length} of {props.goal.nrOfFriends} approvals.
+        Approved: {props.goal.approved}<br/>
+        Status: {props.goal.complete}<br/>
       </p>
-      <button>Complete</button>
-      <button>Approve</button>
-      <button>Pay out</button>
+      <button className="pure-button">Complete</button>
+      <button className="pure-button">Approve</button>
+      <button className="pure-button">Pay out</button>
     </div>
   )
 }
@@ -25,14 +27,12 @@ Goal.propTypes = {
     description: PropTypes.string,
     owner: PropTypes.string,
     beneficiary: PropTypes.string,
+    friend: PropTypes.string,
     amount: PropTypes.number,
     deadline: PropTypes.number,
-    nrOfFriends: PropTypes.number,
-    approvals: PropTypes.array,
-  }),
-  isOwner: PropTypes.bool,
-  isBeneficiary: PropTypes.bool,
-  isFriend: PropTypes.bool
+    approved: PropTypes.bool,
+    complete: PropTypes.bool,
+  })
 }
 
 export default Goal;
