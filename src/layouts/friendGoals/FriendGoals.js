@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import logo from '../../logo.png'
 
-import Goal from "../../goal/Goal";
+// import Goal from "../../goal/Goal";
 
 class FriendGoals extends Component {
   constructor( props, context ) {

@@ -30,8 +30,8 @@ Goal.propTypes = {
     friend: PropTypes.string,
     amount: PropTypes.number,
     deadline: PropTypes.number,
-    approved: PropTypes.bool,
-    complete: PropTypes.bool,
+    approved: PropTypes.string,
+    complete: PropTypes.string,
   })
 }
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import Goal from "../../goal/Goal";
+import AddGoalForm from "../../goal/AddGoalForm";
 
 class MyGoals extends Component {
   constructor( props, context ) {
@@ -26,10 +27,17 @@ class MyGoals extends Component {
     let goal = await this.contracts.Goalie.methods.goals(0).call();
     console.log(goal);
   }
+  async getGoalIds() {
+    return [1,2,3];
+  }
+  async getGoals() {
+    return {};
+  }
   render() {
     return (
       <main className="container">
         <div className="pure-g">
+          <AddGoalForm/>
           <div className="pure-u-1-1">
             <Goal goal={this.state.testGoal}></Goal>
           </div>
