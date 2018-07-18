@@ -5,7 +5,6 @@ const Goal = (props) => {
   return (
     <div>
       <h2>{props.goal.title}</h2>
-      <p>
         {props.goal.description}<br/>
         Beneficiary: {props.goal.beneficiary}<br/>
         Friend: {props.goal.beneficiary}<br/>
@@ -13,7 +12,6 @@ const Goal = (props) => {
         Deadline:{props.goal.deadline}<br/>
         Approved: {props.goal.approved}<br/>
         Status: {props.goal.complete}<br/>
-      </p>
       <button className="pure-button">Complete</button>
       <button className="pure-button">Approve</button>
       <button className="pure-button">Pay out</button>
@@ -28,10 +26,10 @@ Goal.propTypes = {
     owner: PropTypes.string,
     beneficiary: PropTypes.string,
     friend: PropTypes.string,
-    amount: PropTypes.number,
-    deadline: PropTypes.number,
-    approved: PropTypes.string,
-    complete: PropTypes.string,
+    amount: PropTypes.string,
+    deadline: PropTypes.string,
+    approved: PropTypes.bool,
+    complete: PropTypes.bool,
   })
 }
 
