@@ -15,7 +15,7 @@ const drizzleOptions = {
     Goalie: ['GoalApproved', 'NewGoal'],
   },
   polls: {
-    accounts: 1500
+    accounts: 15000
   }
 }
 

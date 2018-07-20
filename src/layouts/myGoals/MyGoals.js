@@ -8,20 +8,35 @@ import AddGoalForm from "../../goal/AddGoalForm";
 class MyGoals extends Component {
   constructor( props, context ) {
     super( props )
-    
     this.contracts = context.drizzle.contracts;
     this.web3 = context.drizzle.web3;
     this.state = {
-      goals: []
+      goals: [],
+      idKey: [],
+      goalKeys: [],
     }
   }
   async componentDidMount() {
     const goals = await this.getGoals();
-    console.log(goals)
     this.setState({goals});
+
+    this.cacheCallGoals();
   }
-  async getGoalIds() {
+  async cacheCallIds() {
+    const idKey = this.contracts.Goalie.methods.getGoalsByOwner.cacheCall(this.props.accounts[0]);
+    this.setState({idKey});
+  }
+
+  async cacheCallGoals() {
     const ids = await this.contracts.Goalie.methods.getGoalsByOwner(this.props.accounts[0]).call();
+    const goalKeys = ids.map((id) => {
+      return this.contracts.Goalie.methods.goals.cacheCall(id);
+    })
+    this.setState({goalKeys});
+  }
+
+  async getGoalIds() {
+    const ids = this.contracts.Goalie.methods.getGoalsByOwner(this.props.accounts[0]).call();
     return ids;
   }
   async getGoals() {
@@ -34,11 +49,13 @@ class MyGoals extends Component {
     return goals;
   }
   render() {
-    const test = "Testning"
-
-    const goals = this.state.goals.map((goal, index) =>
-    <Goal key={index} goal={goal}></Goal>
-    );
+    const goals = this.state.goalKeys.map((goalKey, index) => {
+      if (!(goalKey in this.props.Goalie.goals)) {
+        return <span key={goalKey}>Loading</span>
+      } else {
+      return <Goal key={index} goal={this.props.Goalie.goals[goalKey].value}></Goal>
+      }
+    })
 
     return (
       <main className="container">
@@ -48,7 +65,6 @@ class MyGoals extends Component {
             web3={this.web3} />
           <div className="pure-u-1-1">
             {goals}
-            {test}
           </div>
         </div>
       </main>
@@ -57,7 +73,8 @@ class MyGoals extends Component {
 }
 
 MyGoals.contextTypes = {
-  drizzle: PropTypes.object
+  drizzle: PropTypes.object,
+  drizzleStore: PropTypes.object,
 }
 
 const mapStateToProps = state => {
