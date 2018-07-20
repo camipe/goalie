@@ -11,20 +11,11 @@ class MyGoals extends Component {
     this.contracts = context.drizzle.contracts;
     this.web3 = context.drizzle.web3;
     this.state = {
-      goals: [],
-      idKey: [],
       goalKeys: [],
     }
   }
   async componentDidMount() {
-    const goals = await this.getGoals();
-    this.setState({goals});
-
     this.cacheCallGoals();
-  }
-  async cacheCallIds() {
-    const idKey = this.contracts.Goalie.methods.getGoalsByOwner.cacheCall(this.props.accounts[0]);
-    this.setState({idKey});
   }
 
   async cacheCallGoals() {
@@ -35,19 +26,6 @@ class MyGoals extends Component {
     this.setState({goalKeys});
   }
 
-  async getGoalIds() {
-    const ids = this.contracts.Goalie.methods.getGoalsByOwner(this.props.accounts[0]).call();
-    return ids;
-  }
-  async getGoals() {
-    const ids = await this.getGoalIds();
-    const goals = [];
-    for (const id of ids) {
-      const goal = await this.contracts.Goalie.methods.goals(id).call()
-      goals.push(goal);
-    }
-    return goals;
-  }
   render() {
     const goals = this.state.goalKeys.map((goalKey, index) => {
       if (!(goalKey in this.props.Goalie.goals)) {
