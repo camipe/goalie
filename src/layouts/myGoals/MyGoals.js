@@ -14,6 +14,7 @@ class MyGoals extends Component {
       goalKeys: [],
     }
   }
+  
   async componentDidMount() {
     this.cacheCallGoals();
   }

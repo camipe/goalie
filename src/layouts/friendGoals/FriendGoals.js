@@ -1,46 +1,64 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { drizzleConnect } from 'drizzle-react';
 
-// import Goal from "../../goal/Goal";
+import Goal from "../../goal/Goal";
 
 class FriendGoals extends Component {
   constructor( props, context ) {
     super( props )
-    
-    this.contracts = context.drizzle.contracts
+    this.contracts = context.drizzle.contracts;
+    this.web3 = context.drizzle.web3;
     this.state = {
-      testGoal: {
-        title: "Testing",
-        description: "Just testing component",
-        owner: "0xc8DaE4BEc5EAe38C25991C0f7eEb0f683eA4FF85",
-        beneficiary: "0x247080353466978b5a3B27F8B74898a07607ddEc",
-        amount: 123241231,
-        deadline: 1529066379,
-        nrOfFriends: 2,
-        approvals: ["0x9d30613A0d005691237dccF99115c5b5c561E434"],
-      }
+      goalKeys: [],
     }
   }
   async componentDidMount() {
-    let goal = await this.contracts.Goalie.methods.goals(0).call();
-    console.log(goal);
+    this.cacheCallGoals();
+  }
+
+  async cacheCallGoals() {
+    const ids = await this.contracts.Goalie.methods.getGoalsByFriend(this.props.accounts[0]).call();
+    const goalKeys = ids.map((id) => {
+      return this.contracts.Goalie.methods.goals.cacheCall(id);
+    })
+    this.setState({goalKeys});
   }
   render() {
+    const goals = this.state.goalKeys.map((goalKey, index) => {
+      if (!(goalKey in this.props.Goalie.goals)) {
+        return <span key={goalKey}>Loading</span>
+      } else {
+      return <Goal key={index} goal={this.props.Goalie.goals[goalKey].value}></Goal>
+      }
+    })
+
     return (
       <main className="container">
         <div className="pure-g">
-          <div className="pure-u-1-1 header">
-            FRIENDS
+          <div className="pure-u-1-1">
+            {goals}
           </div>
         </div>
       </main>
     )
   }
-  
 }
 
 FriendGoals.contextTypes = {
-  drizzle: PropTypes.object
+  drizzle: PropTypes.object,
+  drizzleStore: PropTypes.object,
 }
 
-export default FriendGoals;
+const mapStateToProps = state => {
+  return {
+    accounts: state.accounts,
+    drizzleStatus: state.drizzleStatus,
+    Goalie: state.contracts.Goalie,
+  }
+}
+
+const FriendGoalsContainer = drizzleConnect(FriendGoals, mapStateToProps);
+
+export default FriendGoalsContainer;
+

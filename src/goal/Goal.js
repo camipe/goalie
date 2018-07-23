@@ -6,8 +6,8 @@ const Goal = (props) => {
     <div>
       <h2>{props.goal.title}</h2>
         {props.goal.description}<br/>
+        Friend: {props.goal.friend}<br/>
         Beneficiary: {props.goal.beneficiary}<br/>
-        Friend: {props.goal.beneficiary}<br/>
         Amount: {props.goal.amount}<br/>
         Deadline:{props.goal.deadline}<br/>
         Approved: {props.goal.approved}<br/>
