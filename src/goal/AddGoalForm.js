@@ -32,7 +32,7 @@ class AddGoalForm extends Component {
       this.state.description, 
       this.state.friend, 
       this.state.beneficiary, 
-      this.state.deadline)
+      new Date(this.state.deadline).getTime())
       .send({from: this.props.web3.eth.accounts[0], value: this.props.web3.utils.toWei(this.state.amount, "ether")});
     console.log(this.state);    
   }
@@ -77,7 +77,7 @@ class AddGoalForm extends Component {
             <div className="pure-control-group">
               <label htmlFor="goalDeadline">Deadline:</label>
               <input 
-                type="text" 
+                type="date"
                 name="deadline" 
                 id="goalDeadline"
                 onChange={this.handleInputChange} />
