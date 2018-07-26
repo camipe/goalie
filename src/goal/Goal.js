@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment'
+import moment from 'moment';
+
+import GoalMenu from './GoalMenu';
 
 const Goal = (props) => {
-  console.log(props.goal.deadline / 1)
   return (
     <div>
       <h2>{props.goal.title}</h2>
@@ -14,9 +15,7 @@ const Goal = (props) => {
         Deadline: {moment(parseInt(props.goal.deadline, 10)).format("YYYY/MM/DD")}<br/>
         Approved: {props.goal.approved}<i className="fa fa-thumbs-down"></i><br/>
         Status: {props.goal.complete}<br/>
-      <button className="pure-button">Complete</button>
-      <button className="pure-button">Approve</button>
-      <button className="pure-button">Pay out</button>
+      <GoalMenu mode={props.mode}/>
     </div>
   )
 }

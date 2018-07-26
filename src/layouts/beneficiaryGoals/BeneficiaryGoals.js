@@ -29,7 +29,7 @@ class BeneficiaryGoals extends Component {
       if (!(goalKey in this.props.Goalie.goals)) {
         return <span key={goalKey}>Loading</span>
       } else {
-      return <Goal key={index} goal={this.props.Goalie.goals[goalKey].value}></Goal>
+      return <Goal key={index} mode="beneficiary" goal={this.props.Goalie.goals[goalKey].value}></Goal>
       }
     })
 

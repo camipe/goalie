@@ -14,7 +14,7 @@ class MyGoals extends Component {
       goalKeys: [],
     }
   }
-  
+
   async componentDidMount() {
     this.cacheCallGoals();
   }
@@ -32,7 +32,7 @@ class MyGoals extends Component {
       if (!(goalKey in this.props.Goalie.goals)) {
         return <span key={goalKey}>Loading</span>
       } else {
-      return <Goal key={index} goal={this.props.Goalie.goals[goalKey].value}></Goal>
+      return <Goal key={index} mode="owner" goal={this.props.Goalie.goals[goalKey].value}></Goal>
       }
     })
 
