@@ -3,18 +3,21 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import GoalMenu from './GoalMenu';
+import GoalStatus from './GoalStatus';
 
 const Goal = (props) => {
   return (
-    <div>
+    <div className="goal">
       <h2>{props.goal.title}</h2>
-        {props.goal.description}<br/>
+        Description: {props.goal.description}<br/>
+        Amount: {props.goal.amount} wei<br/>
+        Deadline: {moment(parseInt(props.goal.deadline, 10)).format("YYYY/MM/DD")}<br/>
+        <hr/>
         Friend: {props.goal.friend}<br/>
         Beneficiary: {props.goal.beneficiary}<br/>
-        Amount: {props.goal.amount}<br/>
-        Deadline: {moment(parseInt(props.goal.deadline, 10)).format("YYYY/MM/DD")}<br/>
-        Approved: {props.goal.approved}<i className="fa fa-thumbs-down"></i><br/>
-        Status: {props.goal.complete}<br/>
+        <div className="goal-status">
+          <GoalStatus approval={props.goal.approved} status={props.goal.complete}/>
+        </div>
       <GoalMenu mode={props.mode}/>
     </div>
   )

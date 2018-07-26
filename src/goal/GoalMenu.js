@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 const GoalMenu = (props) => {
   switch (props.mode) {
     case 'owner':
-      return <button className="button-large pure-button">Complete</button>;
+      return <button className="button-large pure-button goal-menu">Complete</button>;
     case 'friend':
-      return <button className="button-large pure-button">Approve</button>;
+      return <button className="button-large pure-button goal-menu">Approve</button>;
     case 'beneficiary':
-      return <button className="button-large pure-button">Pay out</button>;
+      return <button className="button-large pure-button goal-menu">Pay out</button>;
     default: 
       return null;
   }

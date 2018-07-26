@@ -39,11 +39,13 @@ class MyGoals extends Component {
     return (
       <main className="container">
         <div className="pure-g">
-          <AddGoalForm 
-            addGoal={this.contracts.Goalie.methods.addGoal}
-            web3={this.web3} />
-          <div className="pure-u-1-1">
+          <div className="pure-u-3-5">
             {goals}
+          </div>
+          <div className="pure-u-2-5">
+            <AddGoalForm 
+              addGoal={this.contracts.Goalie.methods.addGoal}
+              web3={this.web3} />
           </div>
         </div>
       </main>
