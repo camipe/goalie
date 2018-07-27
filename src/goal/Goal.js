@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import GoalMenu from './GoalMenu';
-import GoalStatus from './GoalStatus';
+import GoalStatusArea from './GoalStatusArea';
 
 const Goal = (props) => {
   return (
@@ -17,7 +17,7 @@ const Goal = (props) => {
           <b>Friend:</b> {props.goal.friend}<br/>
           <b>Beneficiary:</b> {props.goal.beneficiary}<br/>
           <div className="goal-status">
-            <GoalStatus approval={props.goal.approved} status={props.goal.complete}/>
+            <GoalStatusArea approval={props.goal.approved} status={props.goal.complete}/>
           </div>
         </div>
       <GoalMenu mode={props.mode}/>
