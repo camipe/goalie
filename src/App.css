@@ -118,11 +118,30 @@ hr {
   padding: .5rem;
 }
 
-.goal-status {
+.goal-content {
+  width: 75%;
+}
+
+.goal-status-area {
   position: absolute;
   right: 2rem;
   top: 2rem;
-  border: 1px black solid;
+  text-align: center;
+}
+
+.goal-status-area > div {
+  padding: .5rem;
+  margin-top: .5rem;
+}
+
+.red-border {
+  border:3px solid #db3a3a;
+  border-radius:10px;
+}
+
+.green-border {
+  border:3px solid #2ece51;
+  border-radius:10px;
 }
 
 .goal-menu {

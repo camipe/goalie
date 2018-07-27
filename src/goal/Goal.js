@@ -8,15 +8,17 @@ import GoalStatus from './GoalStatus';
 const Goal = (props) => {
   return (
     <div className="goal">
-      <h2>{props.goal.title}</h2>
-        Description: {props.goal.description}<br/>
-        Amount: {props.goal.amount} wei<br/>
-        Deadline: {moment(parseInt(props.goal.deadline, 10)).format("YYYY/MM/DD")}<br/>
-        <hr/>
-        Friend: {props.goal.friend}<br/>
-        Beneficiary: {props.goal.beneficiary}<br/>
-        <div className="goal-status">
-          <GoalStatus approval={props.goal.approved} status={props.goal.complete}/>
+      <div className="goal-content">
+        <h2>{props.goal.title}</h2>
+          <b>Description:</b> {props.goal.description}<br/>
+          <b>Amount:</b> {props.goal.amount} wei<br/>
+          <b>Deadline:</b> {moment(parseInt(props.goal.deadline, 10)).format("YYYY/MM/DD")}<br/>
+          <hr/>
+          <b>Friend:</b> {props.goal.friend}<br/>
+          <b>Beneficiary:</b> {props.goal.beneficiary}<br/>
+          <div className="goal-status">
+            <GoalStatus approval={props.goal.approved} status={props.goal.complete}/>
+          </div>
         </div>
       <GoalMenu mode={props.mode}/>
     </div>
