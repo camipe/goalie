@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 const GoalMenu = (props) => {
   switch (props.mode) {
     case 'owner':
-      return <button className="button-large pure-button goal-menu">Complete</button>;
+      return <button
+        onClick={props.payOwner}
+        className={`button-large pure-button goal-menu ${props.status ? 'pure-button-disabled' : ''}`}>Complete</button>;
     case 'friend':
       return <button 
       onClick={props.handleApproval} 

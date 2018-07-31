@@ -19,6 +19,11 @@ class MyGoals extends Component {
     this.cacheCallGoals();
   }
 
+  handleComplete(goalId) {
+    const stackid = this.contracts.Goalie.methods.payOwner(goalId).send({from: this.props.accounts[0]});
+    console.log(goalId, stackid);
+  }
+
   async cacheCallGoals() {
     const ids = await this.contracts.Goalie.methods.getGoalsByOwner(this.props.accounts[0]).call();
     const goalKeys = ids.map((id) => {
@@ -32,7 +37,13 @@ class MyGoals extends Component {
       if (!(goalKey in this.props.Goalie.goals)) {
         return <span key={goalKey}>Loading</span>
       } else {
-      return <Goal key={index} mode="owner" goal={this.props.Goalie.goals[goalKey].value}></Goal>
+        const goal = this.props.Goalie.goals[goalKey].value;
+        return <Goal 
+          key={index} 
+          mode="owner" 
+          goal={goal}
+          payOwner={this.handleComplete.bind(this, goal.id)}
+          />
       }
     })
 

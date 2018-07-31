@@ -14,9 +14,10 @@ class FriendGoals extends Component {
     }
   }
 
-  handleApproval(goalID, event) {
-    const stackid = this.contracts.Goalie.methods.approveGoal(goalID).send({from: this.props.accounts[0]});
-    console.log(goalID, stackid);
+  handleApproval(goalId, e) {
+    e.preventDefault();
+    const stackid = this.contracts.Goalie.methods.approveGoal(goalId).send({from: this.props.accounts[0]});
+    console.log(goalId, stackid);
   }
 
   async componentDidMount() {
@@ -35,12 +36,12 @@ class FriendGoals extends Component {
       if (!(goalKey in this.props.Goalie.goals)) {
         return <p key={goalKey}>Loading</p>
       } else {
-        console.log(this.props.Goalie.goals[goalKey].value)
+        const goal = this.props.Goalie.goals[goalKey].value;
         return <Goal 
               key={index}
               mode="friend"
-              handleApproval={this.handleApproval.bind(this, this.props.Goalie.goals[goalKey].value.id)}
-              goal={this.props.Goalie.goals[goalKey].value}/>
+              handleApproval={this.handleApproval.bind(this, goal.id)}
+              goal={goal}/>
       }
     })
 

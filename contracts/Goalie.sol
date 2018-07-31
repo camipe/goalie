@@ -29,7 +29,6 @@ contract Goalie is GoalFactory {
     _;
   }
 
-  // TODO: getGoalsWhereOwner
   function getGoalsByOwner(address _owner) external view returns(uint[]) {
     uint[] memory result = new uint[](ownerGoalCount[_owner]);
     uint counter = 0;
@@ -42,7 +41,6 @@ contract Goalie is GoalFactory {
     return result;
   }
 
-  // TODO: getGoals by friend
   function getGoalsByFriend(address _friend) external view returns(uint[]) {
     uint[] memory result = new uint[](friendsGoalCount[_friend]);
     uint counter = 0;
@@ -55,7 +53,6 @@ contract Goalie is GoalFactory {
     return result;
   }
 
-  // getgoals by beneficiary
   function getGoalsByBeneficiary(address _beneficiary) external view returns(uint[]) {
     uint[] memory result = new uint[](beneficiaryGoalCount[_beneficiary]);
     uint counter = 0;

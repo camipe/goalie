@@ -21,7 +21,8 @@ const Goal = (props) => {
           </div>
         </div>
       <GoalMenu 
-        mode={props.mode} 
+        mode={props.mode}
+        payOwner={props.payOwner}
         handleApproval={props.handleApproval}
         approved={props.goal.approved}
         status={props.goal.complete}
