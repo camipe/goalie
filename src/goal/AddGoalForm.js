@@ -29,9 +29,9 @@ class AddGoalForm extends Component {
     event.preventDefault();
     this.props.addGoal(
       this.state.title, 
-      this.state.description, 
-      this.state.friend, 
-      this.state.beneficiary, 
+      this.state.description,  
+      this.state.beneficiary,
+      this.state.friend,
       new Date(this.state.deadline).getTime())
       .send({from: this.props.web3.eth.accounts[0], value: this.props.web3.utils.toWei(this.state.amount, "ether")});
     console.log(this.state);    

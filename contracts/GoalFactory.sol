@@ -8,6 +8,7 @@ contract GoalFactory is Ownable {
 
   // goal struct
   struct Goal {
+    uint id;
     string title;
     string description;
     address owner;
@@ -54,6 +55,7 @@ contract GoalFactory is Ownable {
     uint _deadline) internal {
     // create goal and update indexes
     uint id = goals.push(Goal(
+      goals.length,
       _title, 
       _description, 
       msg.sender,

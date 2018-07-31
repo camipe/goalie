@@ -5,6 +5,7 @@ import ApprovalStatus from './ApprovalStatus';
 import GoalStatus from './GoalStatus';
 
 const GoalStatusArea = (props) => {
+  console.log("Area props:", props)
   return (
     <div className="goal-status-area">
       <ApprovalStatus approved={props.approved}/>
