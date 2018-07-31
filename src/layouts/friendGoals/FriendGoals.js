@@ -33,7 +33,7 @@ class FriendGoals extends Component {
   render() {
     const goals = this.state.goalKeys.map((goalKey, index) => {
       if (!(goalKey in this.props.Goalie.goals)) {
-        return <span key={goalKey}>Loading</span>
+        return <p key={goalKey}>Loading</p>
       } else {
         console.log(this.props.Goalie.goals[goalKey].value)
         return <Goal 

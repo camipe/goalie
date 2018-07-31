@@ -5,8 +5,6 @@ import moment from 'moment';
 import GoalMenu from './GoalMenu';
 import GoalStatusArea from './GoalStatusArea';
 
-// contracts.Goalie.methods.approveGoal.cacheCall
-
 const Goal = (props) => {
   return (
     <div className="goal">
@@ -22,7 +20,12 @@ const Goal = (props) => {
             <GoalStatusArea approved={props.goal.approved} status={props.goal.complete}/>
           </div>
         </div>
-      <GoalMenu mode={props.mode} handleApproval={props.handleApproval}/>
+      <GoalMenu 
+        mode={props.mode} 
+        handleApproval={props.handleApproval}
+        approved={props.goal.approved}
+        status={props.goal.complete}
+        />
     </div>
   )
 }

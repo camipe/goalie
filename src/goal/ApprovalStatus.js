@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const ApprovalStatus = (props) => {
-  console.log(props)
   if (props.approved === true) {
     return <div className="green-border">Approved: <i className="fa fa-thumbs-up"></i><br/></div>
   } else {

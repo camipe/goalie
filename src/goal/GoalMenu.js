@@ -6,7 +6,9 @@ const GoalMenu = (props) => {
     case 'owner':
       return <button className="button-large pure-button goal-menu">Complete</button>;
     case 'friend':
-      return <button onClick={props.handleApproval} className="button-large pure-button goal-menu">Approve</button>;
+      return <button 
+      onClick={props.handleApproval} 
+      className={`button-large pure-button goal-menu ${props.approved ? 'pure-button-disabled' : ''}`}>Approve</button>;
     case 'beneficiary':
       return <button className="button-large pure-button goal-menu">Pay out</button>;
     default: 
