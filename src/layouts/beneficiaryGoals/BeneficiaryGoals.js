@@ -17,6 +17,12 @@ class BeneficiaryGoals extends Component {
     this.cacheCallGoals();
   }
 
+  handlePayout(goalId, e) {
+    e.preventDefault();
+    const stackid = this.contracts.Goalie.methods.payBeneficiary(goalId).send({from: this.props.accounts[0]});
+    console.log(goalId, stackid);
+  }
+
   async cacheCallGoals() {
     const ids = await this.contracts.Goalie.methods.getGoalsByBeneficiary(this.props.accounts[0]).call();
     const goalKeys = ids.map((id) => {
@@ -29,7 +35,13 @@ class BeneficiaryGoals extends Component {
       if (!(goalKey in this.props.Goalie.goals)) {
         return <span key={goalKey}>Loading</span>
       } else {
-      return <Goal key={index} mode="beneficiary" goal={this.props.Goalie.goals[goalKey].value}></Goal>
+        const goal = this.props.Goalie.goals[goalKey].value;
+        return <Goal 
+          key={index} 
+          mode="beneficiary" 
+          goal={goal}
+          payBeneficiary={this.handlePayout.bind(this, goal.id)}
+          />
       }
     })
 

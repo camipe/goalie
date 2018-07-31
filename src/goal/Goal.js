@@ -23,6 +23,7 @@ const Goal = (props) => {
       <GoalMenu 
         mode={props.mode}
         payOwner={props.payOwner}
+        payBeneficiary={props.payBeneficiary}
         handleApproval={props.handleApproval}
         approved={props.goal.approved}
         status={props.goal.complete}
