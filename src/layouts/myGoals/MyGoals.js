@@ -13,9 +13,14 @@ class MyGoals extends Component {
     this.web3 = context.drizzle.web3;
     this.state = {
       goalKeys: [],
+      message: {
+        type: '',
+        content: ''
+      }
     }
 
     this.refreshGoals = this.refreshGoals.bind(this);
+    this.clearMessage = this.clearMessage.bind(this);
   }
 
   async componentDidMount() {
@@ -27,8 +32,12 @@ class MyGoals extends Component {
   }
 
   async handleComplete(goalId) {
-    const stackid = await this.contracts.Goalie.methods.payOwner(goalId).send({from: this.props.accounts[0]});
-    console.log(goalId, stackid);
+    try {
+      await this.contracts.Goalie.methods.payOwner(goalId).send({from: this.props.accounts[0]});
+      this.setState({ message: {type: 'success', content: 'Transaction sent successfully. Wait for changes to be included in blockchain.' }})
+    } catch (error) {
+      this.setState({ message: {type: 'error', content: 'Something went wrong. Transaction failed.' }})
+    }
   }
 
   async cacheCallGoals() {
@@ -39,6 +48,18 @@ class MyGoals extends Component {
     this.setState({goalKeys});
   }
 
+  clearMessage(event) {
+    event.preventDefault();
+    this.setState({ message: {type: '', content: '' }});
+  }
+
+  renderMessage() {
+    if (this.state.message.content === '') {
+      return null
+    } else {
+      return <PopMessage type={this.state.message.type} message={this.state.message.content} clear={this.clearMessage}/>
+    }
+  }
   render() {
     const goals = this.state.goalKeys.map((goalKey, index) => {
       if (!(goalKey in this.props.Goalie.goals)) {
@@ -57,7 +78,7 @@ class MyGoals extends Component {
 
     return (
       <main className="container">
-        <PopMessage type="error" message="Testing 123"/>
+        {this.renderMessage()}
         <button onClick={this.refreshGoals} className="button-large pure-button">Refresh goals</button>
 
         <div className="pure-g">

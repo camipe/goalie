@@ -27,14 +27,17 @@ class AddGoalForm extends Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    this.props.addGoal(
-      this.state.title, 
-      this.state.description,  
-      this.state.beneficiary,
-      this.state.friend,
-      new Date(this.state.deadline).getTime())
-      .send({from: this.props.web3.eth.accounts[0], value: this.props.web3.utils.toWei(this.state.amount, "ether")});
-    console.log(this.state);    
+    try {
+      this.props.addGoal(
+        this.state.title, 
+        this.state.description,  
+        this.state.beneficiary,
+        this.state.friend,
+        Math.round(new Date(this.state.deadline).getTime() / 1000))
+        .send({from: this.props.web3.eth.accounts[0], value: this.props.web3.utils.toWei(this.state.amount, "ether")});
+    } catch (error) {
+      console.log(error);
+    }
   }
   render() {
     return (
@@ -100,6 +103,7 @@ class AddGoalForm extends Component {
 
 AddGoalForm.propTypes = {
   addGoal: PropTypes.func.isRequired,
+  handleAddGoal: PropTypes.func,
   web3: PropTypes.object.isRequired
 }
 

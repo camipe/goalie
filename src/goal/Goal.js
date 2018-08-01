@@ -5,6 +5,10 @@ import moment from 'moment';
 import GoalMenu from './GoalMenu';
 import GoalStatusArea from './GoalStatusArea';
 
+const checkDeadline = (deadline) => {
+  return (deadline <= new Date().getTime())
+}
+
 const Goal = (props) => {
   return (
     <div className="goal">
@@ -12,7 +16,7 @@ const Goal = (props) => {
         <h2>{props.goal.title}</h2>
           <b>Description:</b> {props.goal.description}<br/>
           <b>Amount:</b> {props.web3.utils.fromWei(props.goal.amount, 'ether')} Ξ<br/>
-          <b>Deadline:</b> {moment(parseInt(props.goal.deadline, 10)).format("YYYY/MM/DD")}<br/>
+          <b>Deadline:</b> {moment(parseInt(props.goal.deadline, 10) * 1000).format("YYYY/MM/DD")}<br/>
           <hr/>
           <b>Friend:</b> {props.goal.friend}<br/>
           <b>Beneficiary:</b> {props.goal.beneficiary}<br/>
@@ -27,6 +31,7 @@ const Goal = (props) => {
         handleApproval={props.handleApproval}
         approved={props.goal.approved}
         status={props.goal.complete}
+        deadlinePassed={checkDeadline(parseInt(props.goal.deadline, 10) * 1000)}
         />
     </div>
   )
