@@ -11,7 +11,7 @@ const Goal = (props) => {
       <div className="goal-content">
         <h2>{props.goal.title}</h2>
           <b>Description:</b> {props.goal.description}<br/>
-          <b>Amount:</b> {props.goal.amount} wei<br/>
+          <b>Amount:</b> {props.web3.utils.fromWei(props.goal.amount, 'ether')} Ξ<br/>
           <b>Deadline:</b> {moment(parseInt(props.goal.deadline, 10)).format("YYYY/MM/DD")}<br/>
           <hr/>
           <b>Friend:</b> {props.goal.friend}<br/>
@@ -46,7 +46,8 @@ Goal.propTypes = {
   }),
   approveGoal: PropTypes.func,
   payOwner: PropTypes.func,
-  payBeneficiary: PropTypes.func
+  payBeneficiary: PropTypes.func,
+  web3: PropTypes.object
 }
 
 export default Goal;

@@ -33,7 +33,7 @@ class BeneficiaryGoals extends Component {
   render() {
     const goals = this.state.goalKeys.map((goalKey, index) => {
       if (!(goalKey in this.props.Goalie.goals)) {
-        return <span key={goalKey}>Loading</span>
+        return <p key={goalKey}>Loading</p>
       } else {
         const goal = this.props.Goalie.goals[goalKey].value;
         return <Goal 
@@ -41,6 +41,7 @@ class BeneficiaryGoals extends Component {
           mode="beneficiary" 
           goal={goal}
           payBeneficiary={this.handlePayout.bind(this, goal.id)}
+          web3={this.web3}
           />
       }
     })

@@ -41,7 +41,9 @@ class FriendGoals extends Component {
               key={index}
               mode="friend"
               handleApproval={this.handleApproval.bind(this, goal.id)}
-              goal={goal}/>
+              goal={goal}
+              web3={this.web3}
+              />
       }
     })
 
