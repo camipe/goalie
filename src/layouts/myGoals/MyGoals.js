@@ -4,6 +4,7 @@ import { drizzleConnect } from 'drizzle-react';
 
 import Goal from "../../goal/Goal";
 import AddGoalForm from "../../goal/AddGoalForm";
+import PopMessage from "../../util/PopMessage";
 
 class MyGoals extends Component {
   constructor( props, context ) {
@@ -25,8 +26,8 @@ class MyGoals extends Component {
     this.cacheCallGoals();
   }
 
-  handleComplete(goalId) {
-    const stackid = this.contracts.Goalie.methods.payOwner(goalId).send({from: this.props.accounts[0]});
+  async handleComplete(goalId) {
+    const stackid = await this.contracts.Goalie.methods.payOwner(goalId).send({from: this.props.accounts[0]});
     console.log(goalId, stackid);
   }
 
@@ -56,7 +57,9 @@ class MyGoals extends Component {
 
     return (
       <main className="container">
-        <button onClick={this.refreshGoals} className="button-large pure-button">Refresh goals</button> 
+        <PopMessage type="error" message="Testing 123"/>
+        <button onClick={this.refreshGoals} className="button-large pure-button">Refresh goals</button>
+
         <div className="pure-g">
           <div className="pure-u-3-5">
             {goals}
