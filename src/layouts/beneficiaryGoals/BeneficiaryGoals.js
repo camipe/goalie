@@ -12,6 +12,8 @@ class BeneficiaryGoals extends Component {
     this.state = {
       goalKeys: [],
     }
+
+    this.refreshGoals = this.refreshGoals.bind(this);
   }
   async componentDidMount() {
     this.cacheCallGoals();
@@ -21,6 +23,10 @@ class BeneficiaryGoals extends Component {
     e.preventDefault();
     const stackid = this.contracts.Goalie.methods.payBeneficiary(goalId).send({from: this.props.accounts[0]});
     console.log(goalId, stackid);
+  }
+
+  refreshGoals() {
+    this.cacheCallGoals();
   }
 
   async cacheCallGoals() {
@@ -37,7 +43,7 @@ class BeneficiaryGoals extends Component {
       } else {
         const goal = this.props.Goalie.goals[goalKey].value;
         return <Goal 
-          key={index} 
+          key={goal.id}
           mode="beneficiary" 
           goal={goal}
           payBeneficiary={this.handlePayout.bind(this, goal.id)}
@@ -48,6 +54,7 @@ class BeneficiaryGoals extends Component {
 
     return (
       <main className="container">
+        <button className="button-large pure-button">Refresh goals</button> 
         <div className="pure-g">
           <div className="pure-u-3-5">
             {goals}

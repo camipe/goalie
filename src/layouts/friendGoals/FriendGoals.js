@@ -12,12 +12,18 @@ class FriendGoals extends Component {
     this.state = {
       goalKeys: [],
     }
+
+    this.refreshGoals = this.refreshGoals.bind(this);
   }
 
   handleApproval(goalId, e) {
     e.preventDefault();
     const stackid = this.contracts.Goalie.methods.approveGoal(goalId).send({from: this.props.accounts[0]});
     console.log(goalId, stackid);
+  }
+
+  refreshGoals() {
+    this.cacheCallGoals();
   }
 
   async componentDidMount() {
@@ -38,17 +44,18 @@ class FriendGoals extends Component {
       } else {
         const goal = this.props.Goalie.goals[goalKey].value;
         return <Goal 
-              key={index}
+              key={goal.id}
               mode="friend"
               handleApproval={this.handleApproval.bind(this, goal.id)}
               goal={goal}
               web3={this.web3}
-              />
+            />
       }
     })
 
     return (
       <main className="container">
+        <button className="button-large pure-button">Refresh goals</button> 
         <div className="pure-g">
           <div className="pure-u-3-5">
             {goals}

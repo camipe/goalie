@@ -6,15 +6,15 @@ const GoalMenu = (props) => {
     case 'owner':
       return <button
         onClick={props.payOwner}
-        className={`button-large pure-button goal-menu ${props.status ? 'pure-button-disabled' : ''}`}>Complete</button>;
+        className={`button-large pure-button pure-button-primary goal-menu ${props.status ? 'pure-button-disabled' : ''}`}>Complete</button>;
     case 'friend':
       return <button 
       onClick={props.handleApproval} 
-      className={`button-large pure-button goal-menu ${props.approved ? 'pure-button-disabled' : ''}`}>Approve</button>;
+      className={`button-large pure-button pure-button-primary goal-menu ${props.approved ? 'pure-button-disabled' : ''}`}>Approve</button>;
     case 'beneficiary':
       return <button 
         onClick={props.payBeneficiary}
-        className={`button-large pure-button goal-menu ${(props.deadlinePassed && !props.approved) ? '' : 'pure-button-disabled'}`}>Pay out</button>;
+        className={`button-large pure-button pure-button-primary goal-menu ${(props.deadlinePassed && !props.approved) ? '' : 'pure-button-disabled'}`}>Pay out</button>;
     default: 
       return null;
   }

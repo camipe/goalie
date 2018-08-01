@@ -13,9 +13,15 @@ class MyGoals extends Component {
     this.state = {
       goalKeys: [],
     }
+
+    this.refreshGoals = this.refreshGoals.bind(this);
   }
 
   async componentDidMount() {
+    this.cacheCallGoals();
+  }
+
+  refreshGoals() {
     this.cacheCallGoals();
   }
 
@@ -39,7 +45,7 @@ class MyGoals extends Component {
       } else {
         const goal = this.props.Goalie.goals[goalKey].value;
         return <Goal 
-          key={index} 
+          key={goal.id}
           mode="owner" 
           goal={goal}
           payOwner={this.handleComplete.bind(this, goal.id)}
@@ -50,6 +56,7 @@ class MyGoals extends Component {
 
     return (
       <main className="container">
+        <button onClick={this.refreshGoals} className="button-large pure-button">Refresh goals</button> 
         <div className="pure-g">
           <div className="pure-u-3-5">
             {goals}
