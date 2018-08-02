@@ -92,7 +92,9 @@ class MyGoals extends Component {
           <div className="pure-u-2-5">
             <AddGoalForm 
               addGoal={this.contracts.Goalie.methods.addGoal}
-              web3={this.web3} />
+              web3={this.web3} 
+              setMessage={this.setMessage}
+              />
           </div>
         </div>
       </main>

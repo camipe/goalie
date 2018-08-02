@@ -25,18 +25,28 @@ class AddGoalForm extends Component {
       [name]: value
     });
   }
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
     try {
-      this.props.addGoal(
+      await this.props.addGoal(
         this.state.title, 
         this.state.description,  
         this.state.beneficiary,
         this.state.friend,
         Math.round(new Date(this.state.deadline).getTime() / 1000))
         .send({from: this.props.web3.eth.accounts[0], value: this.props.web3.utils.toWei(this.state.amount, "ether")});
+
+        this.props.setMessage('success', 'Add goal transaction sent successfully.')
+        this.setState({
+          title: '',
+          description: '',
+          friend: '',
+          beneficiary: '',
+          deadline: '',
+          amount: '',
+        })
     } catch (error) {
-      console.log(error);
+      this.props.setMessage('error', 'Something went wrong, transaction failed.')
     }
   }
   render() {
@@ -103,7 +113,7 @@ class AddGoalForm extends Component {
 
 AddGoalForm.propTypes = {
   addGoal: PropTypes.func.isRequired,
-  handleAddGoal: PropTypes.func,
+  setMessage: PropTypes.func,
   web3: PropTypes.object.isRequired
 }
 
