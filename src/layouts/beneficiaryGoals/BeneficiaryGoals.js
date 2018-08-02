@@ -24,10 +24,21 @@ class BeneficiaryGoals extends Component {
     this.refreshGoals = this.refreshGoals.bind(this);
     this.clearMessage = this.clearMessage.bind(this);
   }
+
   async componentDidMount() {
     this.cacheCallGoals();
   }
 
+  /**
+   * Used to let users manually refresh the goal cache instead of refreshing whole page
+   */
+  refreshGoals() {
+    this.cacheCallGoals();
+  }
+
+  /**
+   * Used to handle when the user clicks to pay out as beneficiary
+   */
   async handlePayout(goalId, e) {
     try {
       await this.contracts.Goalie.methods.payBeneficiary(goalId).send({from: this.props.accounts[0]});
@@ -37,10 +48,9 @@ class BeneficiaryGoals extends Component {
     }
   }
 
-  refreshGoals() {
-    this.cacheCallGoals();
-  }
-
+  /**
+   * Used to cache the keys from drizzle representing each goal which then will be rendered by renderGoals().
+   */
   async cacheCallGoals() {
     const ids = await this.contracts.Goalie.methods.getGoalsByBeneficiary(this.props.accounts[0]).call();
     const goalKeys = ids.reverse().map((id) => {
@@ -49,11 +59,17 @@ class BeneficiaryGoals extends Component {
     this.setState({goalKeys});
   }
 
+  /**
+   * Used to clear any user messages
+   */
   clearMessage(event) {
     event.preventDefault();
     this.setState({ message: {type: '', content: '' }});
   }
 
+  /**
+   * Used to render a success or error message to user if one is set in state
+   */
   renderMessage() {
     if (this.state.message.content === '') {
       return null
@@ -62,8 +78,11 @@ class BeneficiaryGoals extends Component {
     }
   }
 
-  render() {
-    const goals = this.state.goalKeys.map((goalKey, index) => {
+  /**
+   * Checks if goals exists in drizzle's state and renders them
+   */
+  renderGoals() {
+    return this.state.goalKeys.map((goalKey, index) => {
       if (!(goalKey in this.props.Goalie.goals)) {
         return <p key={goalKey}>Loading</p>
       } else {
@@ -77,14 +96,16 @@ class BeneficiaryGoals extends Component {
           />
       }
     })
+  }
 
+  render() {
     return (
       <main className="container">
         {this.renderMessage()}
         <button className="button-large pure-button">Refresh goals</button> 
         <div className="pure-g">
           <div className="pure-u-3-5">
-            {goals}
+            {this.renderGoals()}
           </div>
         </div>
       </main>
