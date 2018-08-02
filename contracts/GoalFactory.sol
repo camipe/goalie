@@ -4,7 +4,7 @@ import "./Ownable.sol";
 
 contract GoalFactory is Ownable {
   
-  event NewGoal(uint goalId, string title);
+  event NewGoal(uint goalId, address owner, string title);
 
   // goal struct
   struct Goal {
@@ -20,7 +20,9 @@ contract GoalFactory is Ownable {
     bool complete;
   }
 
-  // goal array
+  /** @dev goal array for storing goals 
+    * index in the array is also the goal's id
+    */
   Goal[] public goals;
 
   // mapping goal to addresses
@@ -33,7 +35,13 @@ contract GoalFactory is Ownable {
   mapping (uint => address) public goalToFriend;
   mapping (address => uint) internal friendsGoalCount;
 
-  // function addGoal()
+  /** @dev Public function for adding new goals 
+    * @param _title Short title
+    * @param _description Short description
+    * @param _beneficiary Address which can withraw funds if the goals fail
+    * @param _friend Address of the person which will approve the goal
+    * @param _deadline Time when the goal must be completed, uses UNIX Epoch time (seconds)
+    */
   function addGoal(    
     string _title, 
     string _description, 
@@ -45,7 +53,7 @@ contract GoalFactory is Ownable {
     _createGoal(_title, _description, _beneficiary, _friend, msg.value, _deadline);
   }
 
-  // function _createGoal()
+    /** @dev internal function for adding new goals */
   function _createGoal(
     string _title, 
     string _description, 
@@ -53,7 +61,7 @@ contract GoalFactory is Ownable {
     address _friend, 
     uint _amount, 
     uint _deadline) internal {
-    // create goal and update indexes
+    // create goal and push to storage array
     uint id = goals.push(Goal(
       goals.length,
       _title, 
@@ -66,6 +74,7 @@ contract GoalFactory is Ownable {
       false,
       false)) - 1;
     
+    // update mappings and indexes
     goalToOwner[id] = msg.sender;
     ownerGoalCount[msg.sender]++;
     goalToBeneficiary[id] = _beneficiary;
@@ -73,6 +82,6 @@ contract GoalFactory is Ownable {
     goalToFriend[id] = _friend;
     friendsGoalCount[_friend]++;
 
-    emit NewGoal(id, _title);// solhint-disable-line
+    emit NewGoal(id, msg.sender, _title);// solhint-disable-line
   }  
 }
