@@ -21,6 +21,7 @@ class MyGoals extends Component {
 
     this.refreshGoals = this.refreshGoals.bind(this);
     this.clearMessage = this.clearMessage.bind(this);
+    this.setMessage = this.setMessage.bind(this);
   }
 
   async componentDidMount() {
@@ -42,15 +43,18 @@ class MyGoals extends Component {
 
   async cacheCallGoals() {
     const ids = await this.contracts.Goalie.methods.getGoalsByOwner(this.props.accounts[0]).call();
-    const goalKeys = ids.map((id) => {
+    const goalKeys = ids.reverse().map((id) => {
       return this.contracts.Goalie.methods.goals.cacheCall(id);
     })
     this.setState({goalKeys});
   }
 
   clearMessage(event) {
-    event.preventDefault();
-    this.setState({ message: {type: '', content: '' }});
+    this.setState({ message: { type: '', content: '' }});
+  }
+
+  setMessage(type, content) {
+    this.setState({ message: { type, content }})
   }
 
   renderMessage() {

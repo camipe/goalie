@@ -47,7 +47,7 @@ class FriendGoals extends Component {
 
   async cacheCallGoals() {
     const ids = await this.contracts.Goalie.methods.getGoalsByFriend(this.props.accounts[0]).call();
-    const goalKeys = ids.map((id) => {
+    const goalKeys = ids.reverse().map((id) => {
       return this.contracts.Goalie.methods.goals.cacheCall(id);
     })
     this.setState({goalKeys});
