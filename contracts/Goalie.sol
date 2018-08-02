@@ -6,8 +6,6 @@ contract Goalie is GoalFactory {
 
   event GoalApproved(uint _goalId, string _title);
 
-  uint private goalFee = 0.01 ether;
-
   modifier onlyGoalOwner(uint _goalId) {
     require(goalToOwner[_goalId] == msg.sender);
     _;
@@ -75,15 +73,13 @@ contract Goalie is GoalFactory {
   function payOwner(uint _goalId) public onlyGoalOwner(_goalId) deadlinePassed(_goalId) returns (uint) {
     Goal storage goal = goals[_goalId];
 
-    // make sure goal is approved
+    // make sure goal is approved and hasn't been completed before
     require(goal.approved == true);
     require(goal.complete == false);
 
     // pay out to goal.owner
     address owner = goal.owner;
-    owner.transfer(goal.amount - goalFee);
-
-    // TODO: Handle error before setting to complete
+    owner.transfer(goal.amount);
 
     goal.complete = true;
   }
@@ -91,15 +87,13 @@ contract Goalie is GoalFactory {
   function payBeneficiary(uint _goalId) public onlyBeneficiary(_goalId) deadlinePassed(_goalId) returns (uint) {
     Goal storage goal = goals[_goalId];
 
-    // make sure goal is approved
+    // make sure goal is not approved and hasn't been completed before
     require(goal.approved == false);
     require(goal.complete == false);
 
     // pay out to goal.owner
     address beneficiary = goal.beneficiary;
-    beneficiary.transfer(goal.amount - goalFee);
-
-    // TODO: Handle error before setting to complete
+    beneficiary.transfer(goal.amount);
 
     goal.complete = true;
   }
