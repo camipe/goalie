@@ -5,6 +5,9 @@ import { drizzleConnect } from 'drizzle-react';
 import Goal from "../../goal/Goal";
 import PopMessage from "../../util/PopMessage";
 
+/**
+ * My goals is a container for showing all goals where user is the beneficiary
+ */
 class BeneficiaryGoals extends Component {
   constructor( props, context ) {
     super( props )
@@ -69,7 +72,7 @@ class BeneficiaryGoals extends Component {
           key={goal.id}
           mode="beneficiary" 
           goal={goal}
-          payBeneficiary={this.handlePayout.bind(this, goal.id)}
+          handlePayout={this.handlePayout.bind(this, goal.id)}
           web3={this.web3}
           />
       }

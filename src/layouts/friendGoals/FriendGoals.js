@@ -5,6 +5,9 @@ import { drizzleConnect } from 'drizzle-react';
 import Goal from "../../goal/Goal";
 import PopMessage from "../../util/PopMessage";
 
+/**
+ * FriendGoals is a container for showing all goals where user is the friend
+ */
 class FriendGoals extends Component {
   constructor( props, context ) {
     super( props )

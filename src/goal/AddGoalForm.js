@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 
+/**
+ * AddGoalForm is used to render a form for adding new goals to the blockchain
+ */
 class AddGoalForm extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +19,10 @@ class AddGoalForm extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
+ /**
+  * generic function to update state when users changes one of the form inputs 
+  */
   handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -25,6 +32,10 @@ class AddGoalForm extends Component {
       [name]: value
     });
   }
+
+  /**
+   * Triggered on submit, sends goal to blockchain, inform user and clears form if it's succesful
+   */
   async handleSubmit(event) {
     event.preventDefault();
     try {
@@ -112,8 +123,11 @@ class AddGoalForm extends Component {
 }
 
 AddGoalForm.propTypes = {
+  // function which adds goal to blockchain
   addGoal: PropTypes.func.isRequired,
+  // function used to set message in parent component
   setMessage: PropTypes.func,
+  // used to access some web3 utility functions
   web3: PropTypes.object.isRequired
 }
 

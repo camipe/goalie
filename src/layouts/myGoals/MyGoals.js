@@ -6,6 +6,9 @@ import Goal from "../../goal/Goal";
 import AddGoalForm from "../../goal/AddGoalForm";
 import PopMessage from "../../util/PopMessage";
 
+/**
+ * MyGoals is a container for showing all goals where user is the owner
+ */
 class MyGoals extends Component {
   constructor( props, context ) {
     super( props )
@@ -35,9 +38,9 @@ class MyGoals extends Component {
   async handleComplete(goalId) {
     try {
       await this.contracts.Goalie.methods.payOwner(goalId).send({from: this.props.accounts[0]});
-      this.setState({ message: {type: 'success', content: 'Transaction sent successfully. Wait for changes to be included in blockchain.' }})
+      this.setMessage('success', 'Transaction sent successfully. Wait for changes to be included in blockchain.')
     } catch (error) {
-      this.setState({ message: {type: 'error', content: 'Something went wrong. Transaction failed.' }})
+      this.setMessage('error', 'Something went wrong. Transaction failed.')
     }
   }
 
@@ -74,7 +77,7 @@ class MyGoals extends Component {
           key={goal.id}
           mode="owner" 
           goal={goal}
-          payOwner={this.handleComplete.bind(this, goal.id)}
+          handleComplete={this.handleComplete.bind(this, goal.id)}
           web3={this.web3}
           />
       }
