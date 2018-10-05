@@ -1,1 +1,0 @@
-Goalie.deployed().then(function(instance){return instance.addGoal('third test goal', 'My goal is to create a goal', web3.eth.accounts[1], web3.eth.accounts[2], 1530722452, {from: web3.eth.accounts[0], value: web3.toWei(1, "ether")});})
