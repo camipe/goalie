@@ -5,20 +5,6 @@ contract GoalieFactory {
   
   address[] public goalies;
 
-  // TODO: implement ownable with ability to clear goalies array for testing purposes
-  // TODO: check if these three can be implemented in solidity or if it's better to do on frontend
-  function goaliesByOwner() external view returns (address[]) {
-    return goalies;
-  }
-
-  function goaliesByBeneficiary() external view returns (address[]) {
-    return goalies;
-  }
-
-  function goaliesByFriend() external view returns (address[]) {
-    return goalies;
-  }
-
   function createGoalie(        
         string _title, 
         string _description,
