@@ -1,6 +1,39 @@
 pragma solidity 0.4.25; // solhint-disable-line
 
 
+contract GoalieFactory {
+  
+  address[] public goalies;
+
+  // TODO: implement ownable with ability to clear goalies array for testing purposes
+  // TODO: check if these three can be implemented in solidity or if it's better to do on frontend
+  function goaliesByOwner() external view returns (address[]) {
+    return goalies;
+  }
+
+  function goaliesByBeneficiary() external view returns (address[]) {
+    return goalies;
+  }
+
+  function goaliesByFriend() external view returns (address[]) {
+    return goalies;
+  }
+
+  function createGoalie(        
+        string _title, 
+        string _description,
+        uint _deadline,
+        address _beneficary, 
+        address _friend) public payable {
+    
+    address newAdress = (new Goalie).value(msg.value)(
+      _title, _description, _deadline, msg.sender, _beneficary, _friend);
+    
+    goalies.push(newAdress);
+  }
+}
+
+
 contract Goalie {
   
   struct Details {
@@ -36,7 +69,7 @@ contract Goalie {
       complete: false
     });
   }
-  
+
   /** @dev Modifier to make sure deadline of a goal has passed */
   modifier deadlinePassed() {
     require(details.deadline <= now); 
