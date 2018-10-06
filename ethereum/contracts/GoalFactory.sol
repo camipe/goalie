@@ -1,86 +1,38 @@
 pragma solidity 0.4.25; // solhint-disable-line
+import "./Goalie.sol";
 
 
-contract GoalFactory {
+contract GoalieFactory {
   
-  event NewGoal(uint goalId, address owner, string title);
+  address[] public goalies;
 
-  // goal struct
-  struct Goal {
-    uint id;
-    string title;
-    string description;
-    address owner;
-    address beneficiary;
-    address friend;
-    uint amount;
-    uint deadline;
-    bool approved;
-    bool complete;
+  // TODO: implement ownable with ability to clear goalies array for testing purposes
+  // TODO: check if these three can be implemented in solidity or if it's better to do on frontend
+  function goaliesByOwner() external view returns (address[]) {
+    address[] empty = [];
+    return empty; 
   }
 
-  /** @dev goal array for storing goals 
-    * index in the array is also the goal's id
-    */
-  Goal[] public goals;
-
-  // mapping goal to addresses
-  mapping (uint => address) public goalToOwner;
-  mapping (address => uint) internal ownerGoalCount;
-
-  mapping (uint => address) public goalToBeneficiary;
-  mapping (address => uint) internal beneficiaryGoalCount;
-
-  mapping (uint => address) public goalToFriend;
-  mapping (address => uint) internal friendsGoalCount;
-
-  /** @dev Public function for adding new goals 
-    * @param _title Short title
-    * @param _description Short description
-    * @param _beneficiary Address which can withraw funds if the goals fail
-    * @param _friend Address of the person which will approve the goal
-    * @param _deadline Time when the goal must be completed, uses UNIX Epoch time (seconds)
-    */
-  function addGoal(    
-    string _title, 
-    string _description, 
-    address _beneficiary, 
-    address _friend,
-    uint _deadline) public payable {
-    // make sure user payed something
-    require(msg.value > 0);
-    _createGoal(_title, _description, _beneficiary, _friend, msg.value, _deadline);
+  function goaliesByBeneficiary() external view returns (address[]) {
+    address[] empty = [];
+    return empty; 
   }
 
-    /** @dev internal function for adding new goals */
-  function _createGoal(
-    string _title, 
-    string _description, 
-    address _beneficiary, 
-    address _friend, 
-    uint _amount, 
-    uint _deadline) internal {
-    // create goal and push to storage array
-    uint id = goals.push(Goal(
-      goals.length,
-      _title, 
-      _description, 
-      msg.sender,
-      _beneficiary,
-      _friend,
-      _amount,
-      _deadline,
-      false,
-      false)) - 1;
+  function goaliesByBeneficiary() external view returns (address[]) {
+    address[] empty = [];
+    return empty; 
+  }
+
+  function createGoalie(        
+        string _title, 
+        string _description,
+        uint _deadline,
+        address _beneficary, 
+        address _friend) public payable {
     
-    // update mappings and indexes
-    goalToOwner[id] = msg.sender;
-    ownerGoalCount[msg.sender]++;
-    goalToBeneficiary[id] = _beneficiary;
-    beneficiaryGoalCount[_beneficiary]++;
-    goalToFriend[id] = _friend;
-    friendsGoalCount[_friend]++;
-
-    emit NewGoal(id, msg.sender, _title);// solhint-disable-line
-  }  
+    address newAdress = (new Goalie).value(msg.value)(
+      _title, _description, _deadline, msg.sender, _beneficary, _friend);
+    
+    goalies.push(newAdress);
+  }
 }
