@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/camipe/goalie#readme",
   "dependencies": {
+    "dotenv": "^6.0.0",
     "fs-extra": "^7.0.0",
     "ganache-cli": "^6.1.8",
     "mocha": "^5.2.0",

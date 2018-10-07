@@ -1,6 +1,5 @@
-/*
-  Compile script by Stephen Grider https://github.com/StephenGrider/EthereumCasts
-  Modified by: Micael Persson
+/* Compile script by Stephen Grider https://github.com/StephenGrider/EthereumCasts
+*  Modified by: Micael Persson
 */
 /* eslint-disable */
 
