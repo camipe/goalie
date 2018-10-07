@@ -1,32 +1,44 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import goalieFactory from '../ethereum/factory';
+import GoalieFactory from '../ethereum/factory';
+import Goalie from '../ethereum/goalie';
 
 const propTypes = {
-  goalieAddresses: PropTypes.arrayOf(PropTypes.string),
-};
-
-const defaultProps = {
-  goalieAddresses: [],
+  goalies: PropTypes.arrayOf(PropTypes.object),
 };
 
 class GoalieIndex extends Component {
   static async getInitialProps() {
-    const goalieAddresses = await goalieFactory.methods.getGoalies().call();
+    const goalieAddresses = await GoalieFactory.methods.getGoalies().call();
 
-    return { goalieAddresses };
+    const goalies = await Promise.all(
+      goalieAddresses
+        .map(address => Goalie(address))
+        .map(async (goalie) => {
+          const details = await goalie.methods.details().call();
+          return { address: goalie.options.address, details };
+        }),
+    );
+
+    return { goalies };
   }
 
   static defaultProps = {
-    goalieAddresses: [],
+    goalies: [],
   }
 
   renderList() {
-    const { goalieAddresses } = this.props;
+    const { goalies } = this.props;
 
-    const addresses = goalieAddresses.map(address => <p key={address}>{address}</p>);
+    const goalieElements = goalies.map(goalie => (
+      <p>
+        {goalie.details.title}
+        <br />
+        {goalie.address}
+      </p>
+    ));
 
-    return addresses;
+    return goalieElements;
   }
 
   render() {
@@ -37,6 +49,5 @@ class GoalieIndex extends Component {
 }
 
 GoalieIndex.propTypes = propTypes;
-GoalieIndex.defaultProps = defaultProps;
 
 export default GoalieIndex;
