@@ -49,6 +49,12 @@
       "browser": true,
       "node": true
     },
-    "parser": "babel-eslint"
+    "parser": "babel-eslint",
+    "rules": {
+      "jsx-a11y/anchor-is-valid": [ "off", {
+        "components": [ "Link" ],
+        "specialLink": [ "route" ]
+      }]
+    }
   }
 }

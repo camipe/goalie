@@ -1,0 +1,33 @@
+import React from 'react';
+import { Container } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import Head from 'next/head';
+import Header from './Header';
+
+const propTypes = {
+  children: PropTypes.node,
+};
+
+const defaultProps = {
+  children: null,
+};
+
+const Layout = (props) => {
+  const { children } = props;
+
+  return (
+    <Container>
+      <Head>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css" />
+      </Head>
+
+      <Header />
+      {children}
+    </Container>
+  );
+};
+
+Layout.propTypes = propTypes;
+Layout.defaultProps = defaultProps;
+
+export default Layout;

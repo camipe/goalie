@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'next/router';
 import GoalieFactory from '../ethereum/factory';
 import Goalie from '../ethereum/goalie';
+
+import Layout from '../components/Layout';
 
 const propTypes = {
   goalies: PropTypes.arrayOf(PropTypes.object),
@@ -31,7 +34,7 @@ class GoalieIndex extends Component {
     const { goalies } = this.props;
 
     const goalieElements = goalies.map(goalie => (
-      <p>
+      <p key={goalie.address}>
         {goalie.details.title}
         <br />
         {goalie.address}
@@ -43,11 +46,14 @@ class GoalieIndex extends Component {
 
   render() {
     return (
-      <div>{ this.renderList()}</div>
+      <Layout>
+        <div>{ this.renderList()}</div>
+      </Layout>
+
     );
   }
 }
 
 GoalieIndex.propTypes = propTypes;
 
-export default GoalieIndex;
+export default withRouter(GoalieIndex);
