@@ -4,6 +4,20 @@ pragma solidity 0.4.25; // solhint-disable-line
 contract GoalieFactory {
   
   address[] public goalies;
+  address public administrator;
+
+  constructor() public {
+    administrator = msg.sender;
+  }
+
+  function getGoalies() external view returns (address[]) {
+    return goalies;
+  }
+
+  function resetGoalies() public {
+    require(administrator == msg.sender);
+    delete goalies;
+  }
 
   function createGoalie(        
         string _title, 
