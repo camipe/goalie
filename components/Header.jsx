@@ -16,8 +16,7 @@ export default () => (
             </a>
           </Link>)
         }
-      >
-      </Menu.Item>
+      />
     </Container>
   </Menu>
 );
