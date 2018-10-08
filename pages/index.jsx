@@ -6,6 +6,7 @@ import { Link } from '../routes';
 import GoalieFactory from '../ethereum/factory';
 import Goalie from '../ethereum/goalie';
 import Layout from '../components/Layout';
+import GoalieForm from '../components/GoalieForm';
 
 
 const propTypes = {
@@ -19,9 +20,9 @@ class GoalieIndex extends Component {
     const goalies = await Promise.all(
       goalieAddresses
         .map(address => Goalie(address))
-        .map(async (goalie) => {
-          const details = await goalie.methods.details().call();
-          return { address: goalie.options.address, details };
+        .map(async (goalieInstance) => {
+          const details = await goalieInstance.methods.details().call();
+          return { address: goalieInstance.options.address, details };
         }),
     );
 
@@ -45,7 +46,7 @@ class GoalieIndex extends Component {
           </div>
         ),
         extra: (
-          <Link route="/#" passhref>
+          <Link route="/#">
             <a>View details</a>
           </Link>
         ),
@@ -60,6 +61,7 @@ class GoalieIndex extends Component {
   render() {
     return (
       <Layout>
+        <GoalieForm />
         <div>{ this.renderList()}</div>
       </Layout>
     );

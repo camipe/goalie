@@ -9,7 +9,7 @@ export default () => (
         as="a"
         header
         content={(
-          <Link route="/" passhref>
+          <Link route="/">
             <a>
               <Icon name="trophy" />
               Goalie
