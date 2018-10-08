@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { Card } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
+import { Link } from '../routes';
 import GoalieFactory from '../ethereum/factory';
 import Goalie from '../ethereum/goalie';
 import Layout from '../components/Layout';
@@ -33,15 +35,26 @@ class GoalieIndex extends Component {
   renderList() {
     const { goalies } = this.props;
 
-    const goalieElements = goalies.map(goalie => (
-      <p key={goalie.address}>
-        {goalie.details.title}
-        <br />
-        {goalie.address}
-      </p>
+    const items = goalies.map(goalie => (
+      {
+        header: goalie.details.title,
+        meta: `deployed at ${goalie.address}`,
+        description: (
+          <div>
+            {goalie.details.description}
+          </div>
+        ),
+        extra: (
+          <Link route="/#" passhref>
+            <a>View details</a>
+          </Link>
+        ),
+        fluid: true,
+      }
     ));
 
-    return goalieElements;
+
+    return <Card.Group items={items} />;
   }
 
   render() {
