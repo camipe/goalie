@@ -16,14 +16,15 @@ const Layout = (props) => {
   const { children } = props;
 
   return (
-    <Container>
+    <>
       <Head>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css" />
       </Head>
-
       <Header />
-      {children}
-    </Container>
+      <Container style={{ marginTop: '7em' }}>
+        {children}
+      </Container>
+    </>
   );
 };
 

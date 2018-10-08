@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import GoalieFactory from '../ethereum/factory';
 import Goalie from '../ethereum/goalie';
-
 import Layout from '../components/Layout';
+
 
 const propTypes = {
   goalies: PropTypes.arrayOf(PropTypes.object),
@@ -49,7 +49,6 @@ class GoalieIndex extends Component {
       <Layout>
         <div>{ this.renderList()}</div>
       </Layout>
-
     );
   }
 }

@@ -1,11 +1,23 @@
 import React from 'react';
-import { Menu } from 'semantic-ui-react';
+import { Menu, Container, Icon } from 'semantic-ui-react';
 import { Link } from '../routes';
 
 export default () => (
-  <Menu size="huge" style={{ marginTop: '5px' }}>
-    <Link route="/">
-      <a className="item">Goalie</a>
-    </Link>
+  <Menu size="huge" fixed="top">
+    <Container>
+      <Menu.Item
+        as="a"
+        header
+        content={(
+          <Link route="/" passhref>
+            <a>
+              <Icon name="trophy" />
+              Goalie
+            </a>
+          </Link>)
+        }
+      >
+      </Menu.Item>
+    </Container>
   </Menu>
 );
