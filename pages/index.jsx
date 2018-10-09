@@ -6,8 +6,6 @@ import { Link } from '../routes';
 import GoalieFactory from '../ethereum/factory';
 import Goalie from '../ethereum/goalie';
 import Layout from '../components/Layout';
-import GoalieForm from '../components/GoalieForm';
-
 
 const propTypes = {
   goalies: PropTypes.arrayOf(PropTypes.object),
@@ -61,7 +59,6 @@ class GoalieIndex extends Component {
   render() {
     return (
       <Layout>
-        <GoalieForm />
         <div>{ this.renderList()}</div>
       </Layout>
     );

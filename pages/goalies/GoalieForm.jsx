@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Form, Message } from 'semantic-ui-react';
-import GoalieFactory from '../ethereum/factory';
-import web3 from '../ethereum/web3';
+import { withRouter } from 'next/router';
+import GoalieFactory from '../../ethereum/factory';
+import web3 from '../../ethereum/web3';
+import Layout from '../../components/Layout';
 
 class GoalieForm extends Component {
   state = {
@@ -48,7 +50,7 @@ class GoalieForm extends Component {
       title, description, friend, beneficiary, deadline, amount, errorMessage, loading,
     } = this.state;
     return (
-      <div>
+      <Layout>
         <Form onSubmit={this.handleSubmit} error={!!errorMessage}>
           <Form.Input
             label="Title"
@@ -91,10 +93,9 @@ class GoalieForm extends Component {
             Add Goalie
           </Button>
         </Form>
-      </div>
-
+      </Layout>
     );
   }
 }
 
-export default GoalieForm;
+export default withRouter(GoalieForm);

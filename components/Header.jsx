@@ -6,7 +6,6 @@ export default () => (
   <Menu size="huge" fixed="top">
     <Container>
       <Menu.Item
-        as="a"
         header
         content={(
           <Link route="/">
