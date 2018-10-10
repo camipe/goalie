@@ -7,6 +7,7 @@ import {
   Card,
   Header,
   Button,
+  Message,
 } from 'semantic-ui-react';
 import moment from 'moment';
 import web3 from '../../ethereum/web3';
@@ -14,18 +15,24 @@ import Goalie from '../../ethereum/goalie';
 import Layout from '../../components/Layout';
 
 class GoalieDetails extends Component {
+  state = {
+    loadingApprove: false,
+    loadingComplete: false,
+    errorMessage: '',
+  }
+
   static async getInitialProps(props) {
     const { address } = props.query;
 
     const goalie = Goalie(address);
     const details = await goalie.methods.details().call();
-    const value = '1';
+    const value = 1;
 
     return { address, details, value };
   }
 
   static propTypes = {
-    details: PropTypes.objectOf(PropTypes.node).isRequired,
+    details: PropTypes.objectOf(PropTypes.any).isRequired,
     value: PropTypes.number.isRequired,
     address: PropTypes.string.isRequired,
   }
@@ -34,30 +41,38 @@ class GoalieDetails extends Component {
     event.preventDefault();
     const { address } = this.props;
 
+    this.setState({ loadingApprove: true, errorMessage: '' });
+
     try {
       const accounts = await web3.eth.getAccounts();
       const goalie = Goalie(address);
+
       await goalie.methods.approveGoal().send({ from: accounts[0] });
     } catch (error) {
-      console.log(error);
+      this.setState({ errorMessage: error.message });
     }
+    this.setState({ loadingApprove: false });
   }
 
   handleComplete = async (event) => {
     event.preventDefault();
     const { address } = this.props;
 
+    this.setState({ loadingComplete: true, errorMessage: '' });
+
     try {
       const accounts = await web3.eth.getAccounts();
       const goalie = Goalie(address);
       await goalie.methods.completeGoal().send({ from: accounts[0] });
     } catch (error) {
-      console.log(error);
+      this.setState({ errorMessage: error.message });
     }
+    this.setState({ loadingComplete: false });
   }
 
   render() {
     const { details, value } = this.props;
+    const { loadingApprove, loadingComplete, errorMessage } = this.state;
     return (
       <Layout>
         <Grid>
@@ -98,14 +113,16 @@ class GoalieDetails extends Component {
                   <p>Approval: True</p>
                   <p>Completed: False</p>
                   <div className="ui two buttons">
-                    <Button basic color="green" onClick={this.handleApproval}>
+                    <Button basic color="green" loading={loadingApprove} onClick={this.handleApproval}>
                       Approve
                     </Button>
-                    <Button basic color="red" onClick={this.handleComplete}>
+                    <Button basic color="red" loading={loadingComplete} onClick={this.handleComplete}>
                       Complete
                     </Button>
                   </div>
+
                 </Card.Content>
+                <Message error header="Oops!" hidden={!errorMessage} content={errorMessage} attached="bottom" />
               </Card>
             </Grid.Column>
           </Grid.Row>
