@@ -146,7 +146,7 @@ class GoalieDetails extends Component {
                   </div>
 
                 </Card.Content>
-                <Message error header="Oops!" hidden={!errorMessage} content={errorMessage} attached="bottom" />
+                <Message error header="Oops!" size="small" hidden={!errorMessage} content={errorMessage} attached="bottom" />
               </Card>
             </Grid.Column>
           </Grid.Row>
