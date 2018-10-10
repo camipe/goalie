@@ -86,7 +86,10 @@ class GoalieDetails extends Component {
               <Card fluid>
                 <Card.Content>
                   <Card.Header>{details.title}</Card.Header>
-                  <Card.Meta>{`Expires at ${moment(parseInt(details.deadline, 10) * 1000).format('YYYY/MM/DD')}`}</Card.Meta>
+                  <Card.Meta>
+                    <Icon name="calendar alternate" />
+                    {`Expires at ${moment(parseInt(details.deadline, 10) * 1000).format('YYYY/MM/DD')}`}
+                  </Card.Meta>
                 </Card.Content>
                 <Card.Content>
                   <Grid>
