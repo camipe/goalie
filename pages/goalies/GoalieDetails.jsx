@@ -10,6 +10,7 @@ import {
   Message,
 } from 'semantic-ui-react';
 import moment from 'moment';
+import { Router } from '../../routes';
 import web3 from '../../ethereum/web3';
 import Goalie from '../../ethereum/goalie';
 import Layout from '../../components/Layout';
@@ -48,6 +49,7 @@ class GoalieDetails extends Component {
       const goalie = Goalie(address);
 
       await goalie.methods.approveGoal().send({ from: accounts[0] });
+      Router.pushRoute('goalieDetails', { address });
     } catch (error) {
       this.setState({ errorMessage: error.message });
     }
@@ -63,7 +65,9 @@ class GoalieDetails extends Component {
     try {
       const accounts = await web3.eth.getAccounts();
       const goalie = Goalie(address);
+
       await goalie.methods.completeGoal().send({ from: accounts[0] });
+      Router.pushRoute('goalieDetails', { address });
     } catch (error) {
       this.setState({ errorMessage: error.message });
     }
