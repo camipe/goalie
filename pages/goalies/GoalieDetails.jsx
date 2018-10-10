@@ -8,6 +8,7 @@ import {
   Header,
   Button,
   Message,
+  Icon,
 } from 'semantic-ui-react';
 import moment from 'moment';
 import { Router } from '../../routes';
@@ -81,7 +82,7 @@ class GoalieDetails extends Component {
       <Layout>
         <Grid>
           <Grid.Row columns="2">
-            <Grid.Column width="12">
+            <Grid.Column width="11">
               <Card fluid>
                 <Card.Content>
                   <Card.Header>{details.title}</Card.Header>
@@ -90,7 +91,7 @@ class GoalieDetails extends Component {
                 <Card.Content>
                   <Grid>
                     <Grid.Row columns="2">
-                      <Grid.Column width="12">
+                      <Grid.Column width="14">
                         <Header sub>Description</Header>
                         {details.description}
                       </Grid.Column>
@@ -110,12 +111,28 @@ class GoalieDetails extends Component {
                 </Card.Content>
               </Card>
             </Grid.Column>
-            <Grid.Column width="4">
+            <Grid.Column width="5">
               <Card fluid>
                 <Card.Content extra>
                   <Card.Header>Status</Card.Header>
-                  <p>Approval: True</p>
-                  <p>Completed: False</p>
+                  <Statistic.Group size="small" widths="two" style={{ paddingTop: '0.5em', paddingBottom: '1em' }}>
+                    <Statistic color={details.approval ? 'green' : 'red'}>
+                      <Statistic.Value>
+                        {
+                          details.approval ? <Icon name="checkmark" /> : <Icon name="delete" />
+                        }
+                      </Statistic.Value>
+                      <Statistic.Label>Approved</Statistic.Label>
+                    </Statistic>
+                    <Statistic color={details.complete ? 'green' : 'red'}>
+                      <Statistic.Value>
+                        {
+                          details.complete ? <Icon name="checkmark" /> : <Icon name="delete" />
+                        }
+                      </Statistic.Value>
+                      <Statistic.Label>Completed</Statistic.Label>
+                    </Statistic>
+                  </Statistic.Group>
                   <div className="ui two buttons">
                     <Button basic color="green" loading={loadingApprove} onClick={this.handleApproval}>
                       Approve
