@@ -4,19 +4,9 @@ pragma solidity 0.4.25; // solhint-disable-line
 contract GoalieFactory {
   
   address[] public goalies;
-  address public administrator;
-
-  constructor() public {
-    administrator = msg.sender;
-  }
 
   function getGoalies() external view returns (address[]) {
     return goalies;
-  }
-
-  function resetGoalies() public {
-    require(administrator == msg.sender);
-    delete goalies;
   }
 
   function createGoalie(        
@@ -57,6 +47,8 @@ contract Goalie {
     address _beneficary, 
     address _friend
   ) public payable {
+
+    require(msg.value >= 0.001 ether);
   
     details = Details({
       title: _title,
@@ -76,11 +68,6 @@ contract Goalie {
     _;
   }
   
-  // testing function
-  function checkBalance() public view returns (uint) {
-    return address(this).balance;
-  }
-  
   /** @dev Public function for approving a goal
   * can only be run by friend
   */
@@ -89,32 +76,20 @@ contract Goalie {
     details.approval = true;
   }
 
-    /** @dev Public function for completing a goal and paying back the owner
-    *  can only be run by owner
-    */
-  function payOwner() public deadlinePassed() {
-    require(details.owner == msg.sender);
-    
-    // make sure goal is approved and hasn't been completed before
-    require(details.approval == true);
-    require(details.complete == false);
+  /** @dev Used to completing a goal and pay out to owner or beneficiary depending on approval status
+  *
+  */
+  function completeGoal() public deadlinePassed() {
+    require(msg.sender == details.owner || msg.sender == details.beneficiary);
 
-    // complete goal and pay out balance to goal owner
-    details.complete = true;
-    details.owner.transfer(address(this).balance);
+    if (details.approval && !details.complete) {
+      // pay out to the owner if the goal is approved but not completed
+      details.complete = true;
+      details.owner.transfer(address(this).balance);
+    } else if (!details.approval && !details.complete) {
+      // pay out to beneficiary if the goal is not approved and not completed
+      details.complete = true;
+      details.beneficiary.transfer(address(this).balance);
+    }
   }
-
-    /** @dev Public function for completing a goal and paying out to the beneficiary*/
-  function payBeneficiary() public deadlinePassed() {
-    require(details.beneficiary == msg.sender);
-
-    // make sure goal is not approved and hasn't been completed before
-    require(details.approval == false);
-    require(details.complete == false);
-
-    // complete goal and pay out balance to goal beneficiary
-    details.complete = true;
-    details.beneficiary.transfer(address(this).balance);
-  }
-
 }
