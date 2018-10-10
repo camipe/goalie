@@ -21,7 +21,7 @@ const Layout = (props) => {
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css" />
       </Head>
       <Header />
-      <Container style={{ marginTop: '7em' }}>
+      <Container style={{ paddingTop: '7em' }}>
         {children}
       </Container>
     </>
