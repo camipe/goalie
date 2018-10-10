@@ -8,11 +8,10 @@ import {
   Header,
   Button,
 } from 'semantic-ui-react';
+import moment from 'moment';
 import web3 from '../../ethereum/web3';
 import Goalie from '../../ethereum/goalie';
 import Layout from '../../components/Layout';
-
-// 3. presentera datan
 
 class GoalieDetails extends Component {
   static async getInitialProps(props) {
@@ -22,12 +21,39 @@ class GoalieDetails extends Component {
     const details = await goalie.methods.details().call();
     const value = '1';
 
-    return { details, value };
+    return { address, details, value };
   }
 
   static propTypes = {
     details: PropTypes.objectOf(PropTypes.node).isRequired,
     value: PropTypes.number.isRequired,
+    address: PropTypes.string.isRequired,
+  }
+
+  handleApproval = async (event) => {
+    event.preventDefault();
+    const { address } = this.props;
+
+    try {
+      const accounts = await web3.eth.getAccounts();
+      const goalie = Goalie(address);
+      await goalie.methods.approveGoal().send({ from: accounts[0] });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  handleComplete = async (event) => {
+    event.preventDefault();
+    const { address } = this.props;
+
+    try {
+      const accounts = await web3.eth.getAccounts();
+      const goalie = Goalie(address);
+      await goalie.methods.completeGoal().send({ from: accounts[0] });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
@@ -40,7 +66,7 @@ class GoalieDetails extends Component {
               <Card fluid>
                 <Card.Content>
                   <Card.Header>{details.title}</Card.Header>
-                  <Card.Meta>{`Expires at ${details.deadline}`}</Card.Meta>
+                  <Card.Meta>{`Expires at ${moment(parseInt(details.deadline, 10) * 1000).format('YYYY/MM/DD')}`}</Card.Meta>
                 </Card.Content>
                 <Card.Content>
                   <Grid>
@@ -72,11 +98,11 @@ class GoalieDetails extends Component {
                   <p>Approval: True</p>
                   <p>Completed: False</p>
                   <div className="ui two buttons">
-                    <Button basic color="green">
+                    <Button basic color="green" onClick={this.handleApproval}>
                       Approve
                     </Button>
-                    <Button basic color="red">
-                      Decline
+                    <Button basic color="red" onClick={this.handleComplete}>
+                      Complete
                     </Button>
                   </div>
                 </Card.Content>
