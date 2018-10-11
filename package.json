@@ -29,6 +29,7 @@
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "semantic-ui-calendar-react": "^0.9.1",
     "semantic-ui-css": "^2.4.0",
     "semantic-ui-react": "^0.82.5",
     "solc": "^0.4.25",
@@ -51,10 +52,29 @@
     },
     "parser": "babel-eslint",
     "rules": {
-      "jsx-a11y/anchor-is-valid": [ "off", {
-        "components": [ "Link" ],
-        "specialLink": [ "route" ]
+      "jsx-a11y/anchor-is-valid": [
+        "off",
+        {
+          "components": [
+            "Link"
+          ],
+          "specialLink": [
+            "route"
+          ]
+        }
+        
+      ],
+      "jsx-a11y/label-has-associated-control": [ "error", {
+        "required": {
+          "some": [ "nesting", "id"  ]
+        }
+      }],
+      "jsx-a11y/label-has-for": [ "error", {
+        "required": {
+          "some": [ "nesting", "id"  ]
+        }
       }]
+
     }
   }
 }
