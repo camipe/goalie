@@ -38,10 +38,7 @@ class GoalieIndex extends Component {
     return { goalies };
   }
 
-  handleChange = (e, { name, value }) => {
-    console.log(name, value);
-    this.setState({ [name]: value });
-  }
+  handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   renderList() {
     const { goalies } = this.props;
