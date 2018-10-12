@@ -36,6 +36,7 @@ class GoalieIndex extends Component {
 
     const items = goalies.map(goalie => (
       {
+        key: goalie.address,
         header: goalie.details.title,
         meta: `deployed at ${goalie.address}`,
         description: (
