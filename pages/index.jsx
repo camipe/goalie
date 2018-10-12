@@ -17,6 +17,12 @@ const propTypes = {
 };
 
 class GoalieIndex extends Component {
+  state = {
+    filterOwn: false,
+    filterFriends: false,
+    filterBeneficiary: false,
+  }
+
   static async getInitialProps() {
     const goalieAddresses = await GoalieFactory.methods.getGoalies().call();
 
@@ -30,6 +36,11 @@ class GoalieIndex extends Component {
     );
 
     return { goalies };
+  }
+
+  handleChange = (e, { name, value }) => {
+    console.log(name, value);
+    this.setState({ [name]: value });
   }
 
   renderList() {
@@ -59,6 +70,8 @@ class GoalieIndex extends Component {
   }
 
   render() {
+    const { filterOwn, filterFriends, filterBeneficiary } = this.state;
+
     return (
       <Layout>
         <Grid>
@@ -74,13 +87,34 @@ class GoalieIndex extends Component {
                   <Card.Description>
                     <Form>
                       <Form.Field>
-                        <Checkbox toggle label="My Goalies" />
+                        <Checkbox
+                          toggle
+                          name="filterOwn"
+                          label="My Goalies"
+                          value={!filterOwn}
+                          checked={filterOwn === true}
+                          onChange={this.handleChange}
+                        />
                       </Form.Field>
                       <Form.Field>
-                        <Checkbox toggle label="Friends' Goalies" />
+                        <Checkbox
+                          toggle
+                          name="filterFriends"
+                          label="Friends' Goalies"
+                          value={!filterFriends}
+                          checked={filterFriends === true}
+                          onChange={this.handleChange}
+                        />
                       </Form.Field>
                       <Form.Field>
-                        <Checkbox toggle label="Benficiary Goalies" />
+                        <Checkbox
+                          toggle
+                          name="filterBeneficiary"
+                          label="Benficiary Goalies"
+                          value={filterBeneficiary}
+                          checked={filterBeneficiary}
+                          onChange={this.handleChange}
+                        />
                       </Form.Field>
                     </Form>
                   </Card.Description>
