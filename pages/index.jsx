@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { Card } from 'semantic-ui-react';
+import {
+  Card,
+  Grid,
+  Checkbox,
+  Form,
+} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import { Link } from '../routes';
@@ -8,7 +13,7 @@ import Goalie from '../ethereum/goalie';
 import Layout from '../components/Layout';
 
 const propTypes = {
-  goalies: PropTypes.arrayOf(PropTypes.object),
+  goalies: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 class GoalieIndex extends Component {
@@ -27,10 +32,6 @@ class GoalieIndex extends Component {
     return { goalies };
   }
 
-  static defaultProps = {
-    goalies: [],
-  }
-
   renderList() {
     const { goalies } = this.props;
 
@@ -45,7 +46,7 @@ class GoalieIndex extends Component {
           </div>
         ),
         extra: (
-          <Link route="/#">
+          <Link route={`/details/${goalie.address}`}>
             <a>View details</a>
           </Link>
         ),
@@ -60,7 +61,34 @@ class GoalieIndex extends Component {
   render() {
     return (
       <Layout>
-        <div>{ this.renderList()}</div>
+        <Grid>
+          <Grid.Row columns="2">
+            <Grid.Column width="12">
+              { this.renderList()}
+            </Grid.Column>
+            <Grid.Column width="4">
+              <Card>
+                <Card.Content>
+                  <Card.Header>Settings</Card.Header>
+                  <Card.Meta>Filter the list of Goalies</Card.Meta>
+                  <Card.Description>
+                    <Form>
+                      <Form.Field>
+                        <Checkbox toggle label="My Goalies" />
+                      </Form.Field>
+                      <Form.Field>
+                        <Checkbox toggle label="Friends' Goalies" />
+                      </Form.Field>
+                      <Form.Field>
+                        <Checkbox toggle label="Benficiary Goalies" />
+                      </Form.Field>
+                    </Form>
+                  </Card.Description>
+                </Card.Content>
+              </Card>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </Layout>
     );
   }

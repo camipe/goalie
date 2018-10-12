@@ -98,7 +98,7 @@ class GoalieDetails extends Component {
                         <Header sub>Description</Header>
                         {details.description}
                       </Grid.Column>
-                      <Grid.Column width="4" textAlign="center">
+                      <Grid.Column width="2" textAlign="center">
                         <Statistic horizontal label="Ether" value={value} />
                       </Grid.Column>
                     </Grid.Row>
