@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import {
+  Button,
   Card,
-  Grid,
   Checkbox,
   Form,
+  Grid,
 } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
@@ -39,6 +40,12 @@ class GoalieIndex extends Component {
   }
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
+
+  handleNewClick = (e) => {
+    e.preventDefault();
+
+
+  }
 
   renderList() {
     const { goalies } = this.props;
@@ -77,6 +84,16 @@ class GoalieIndex extends Component {
               { this.renderList()}
             </Grid.Column>
             <Grid.Column width="4">
+              <Link route="/new">
+                <Button
+                  as="a"
+                  content="Create Goalie"
+                  icon="plus"
+                  primary
+                  fluid
+                />
+              </Link>
+
               <Card>
                 <Card.Content>
                   <Card.Header>Settings</Card.Header>
