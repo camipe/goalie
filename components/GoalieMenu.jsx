@@ -10,9 +10,7 @@ import {
 
 const propTypes = {
   details: PropTypes.objectOf(PropTypes.any).isRequired,
-  isOwner: PropTypes.bool,
-  isFriend: PropTypes.bool,
-  isBeneficiary: PropTypes.bool,
+  role: PropTypes.string,
   loadingApprove: PropTypes.bool.isRequired,
   loadingComplete: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string.isRequired,
@@ -21,9 +19,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  isOwner: false,
-  isFriend: false,
-  isBeneficiary: false,
+  role: '',
 };
 
 const GoalieMenu = (props) => {
@@ -34,9 +30,7 @@ const GoalieMenu = (props) => {
     errorMessage,
     handleApproval,
     handleComplete,
-    isOwner,
-    isFriend,
-    isBeneficiary,
+    role,
   } = props;
 
   // check deadline such things to determine if approve button should be disabled
@@ -81,13 +75,13 @@ const GoalieMenu = (props) => {
             <Statistic.Label>Completed</Statistic.Label>
           </Statistic>
         </Statistic.Group>
-        {isFriend
+        {role === 'friend'
           ? (
             <Button fluid color="green" disabled={disableApproval} loading={loadingApprove} onClick={handleApproval} style={{ marginBottom: '0.8em' }}>
               Approve
             </Button>) : null
         }
-        {isOwner || isBeneficiary
+        {role === 'owner' || role === 'beneficiary'
           ? (
             <Button fluid color="blue" disabled={disableComplete} loading={loadingComplete} onClick={handleComplete}>
               Complete

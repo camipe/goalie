@@ -15,12 +15,12 @@ import { Router } from '../../routes';
 import web3 from '../../ethereum/web3';
 import Goalie from '../../ethereum/goalie';
 
-
 class GoalieDetails extends Component {
   state = {
     loadingApprove: false,
     loadingComplete: false,
     errorMessage: '',
+    role: '',
   }
 
   static async getInitialProps(props) {
@@ -28,15 +28,36 @@ class GoalieDetails extends Component {
 
     const goalie = Goalie(address);
     const details = await goalie.methods.details().call();
-    const value = 1; // TODO: get from contract
 
-    return { address, details, value };
+    let amount = await web3.eth.getBalance(address);
+    amount = web3.utils.fromWei(amount, 'ether');
+
+    return { address, amount, details };
   }
 
   static propTypes = {
     details: PropTypes.objectOf(PropTypes.any).isRequired,
-    value: PropTypes.number.isRequired,
+    amount: PropTypes.number.isRequired,
     address: PropTypes.string.isRequired,
+  }
+
+  async componentWillMount() {
+    const { details } = this.props;
+    let role;
+
+    const accounts = await web3.eth.getAccounts();
+
+    if (accounts[0] === details.owner) {
+      role = 'owner';
+    } else if (accounts[0] === details.beneficiary) {
+      role = 'beneficiary';
+    } else if (details.friend) {
+      role = 'friend';
+    } else {
+      role = '';
+    }
+
+    this.setState({ role });
   }
 
   handleApproval = async (event) => {
@@ -76,8 +97,10 @@ class GoalieDetails extends Component {
   }
 
   render() {
-    const { details, value } = this.props;
-    const { loadingApprove, loadingComplete, errorMessage } = this.state;
+    const { amount, details } = this.props;
+    const {
+      loadingApprove, loadingComplete, errorMessage, role,
+    } = this.state;
     return (
       <Layout>
         <Grid>
@@ -94,12 +117,12 @@ class GoalieDetails extends Component {
                 <Card.Content>
                   <Grid>
                     <Grid.Row columns="2">
-                      <Grid.Column width="14">
+                      <Grid.Column width="12">
                         <Header sub>Description</Header>
                         {details.description}
                       </Grid.Column>
-                      <Grid.Column width="2" textAlign="center">
-                        <Statistic horizontal label="Ether" value={value} />
+                      <Grid.Column width="4" textAlign="center">
+                        <Statistic size="small" label="Ether" value={amount} />
                       </Grid.Column>
                     </Grid.Row>
                   </Grid>
@@ -122,9 +145,7 @@ class GoalieDetails extends Component {
                 errorMessage={errorMessage}
                 handleApproval={this.handleApproval}
                 handleComplete={this.handleComplete}
-                isFriend
-                isOwner
-                isBeneficiary
+                role={role}
               />
             </Grid.Column>
           </Grid.Row>
