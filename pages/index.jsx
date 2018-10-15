@@ -41,12 +41,6 @@ class GoalieIndex extends Component {
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
-  handleNewClick = (e) => {
-    e.preventDefault();
-
-
-  }
-
   renderList() {
     const { goalies } = this.props;
 

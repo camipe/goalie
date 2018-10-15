@@ -6,15 +6,15 @@ import {
   Statistic,
   Card,
   Header,
-  Button,
-  Message,
   Icon,
 } from 'semantic-ui-react';
 import moment from 'moment';
+import Layout from '../../components/Layout';
+import GoalieMenu from '../../components/GoalieMenu';
 import { Router } from '../../routes';
 import web3 from '../../ethereum/web3';
 import Goalie from '../../ethereum/goalie';
-import Layout from '../../components/Layout';
+
 
 class GoalieDetails extends Component {
   state = {
@@ -28,7 +28,7 @@ class GoalieDetails extends Component {
 
     const goalie = Goalie(address);
     const details = await goalie.methods.details().call();
-    const value = 1;
+    const value = 1; // TODO: get from contract
 
     return { address, details, value };
   }
@@ -115,39 +115,17 @@ class GoalieDetails extends Component {
               </Card>
             </Grid.Column>
             <Grid.Column width="5">
-              <Card fluid>
-                <Card.Content extra>
-                  <Card.Header>Status</Card.Header>
-                  <Statistic.Group size="small" widths="two" style={{ paddingTop: '0.5em', paddingBottom: '1em' }}>
-                    <Statistic color={details.approval ? 'green' : 'red'}>
-                      <Statistic.Value>
-                        {
-                          details.approval ? <Icon name="checkmark" /> : <Icon name="delete" />
-                        }
-                      </Statistic.Value>
-                      <Statistic.Label>Approved</Statistic.Label>
-                    </Statistic>
-                    <Statistic color={details.complete ? 'green' : 'red'}>
-                      <Statistic.Value>
-                        {
-                          details.complete ? <Icon name="checkmark" /> : <Icon name="delete" />
-                        }
-                      </Statistic.Value>
-                      <Statistic.Label>Completed</Statistic.Label>
-                    </Statistic>
-                  </Statistic.Group>
-                  <div className="ui two buttons">
-                    <Button basic color="green" loading={loadingApprove} onClick={this.handleApproval}>
-                      Approve
-                    </Button>
-                    <Button basic color="red" loading={loadingComplete} onClick={this.handleComplete}>
-                      Complete
-                    </Button>
-                  </div>
-
-                </Card.Content>
-                <Message error header="Oops!" size="small" hidden={!errorMessage} content={errorMessage} attached="bottom" />
-              </Card>
+              <GoalieMenu
+                details={details}
+                loadingApprove={loadingApprove}
+                loadingComplete={loadingComplete}
+                errorMessage={errorMessage}
+                handleApproval={this.handleApproval}
+                handleComplete={this.handleComplete}
+                isFriend
+                isOwner
+                isBeneficiary
+              />
             </Grid.Column>
           </Grid.Row>
         </Grid>
