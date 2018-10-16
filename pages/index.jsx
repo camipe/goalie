@@ -9,6 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import { withRouter } from 'next/router';
 import { Link } from '../routes';
+import web3 from '../ethereum/web3';
 import GoalieFactory from '../ethereum/factory';
 import Goalie from '../ethereum/goalie';
 import Layout from '../components/Layout';
@@ -19,9 +20,8 @@ const propTypes = {
 
 class GoalieIndex extends Component {
   state = {
-    filterOwn: false,
-    filterFriends: false,
-    filterBeneficiary: false,
+    filterRole: 'all',
+    filteredGoalies: [],
   }
 
   static async getInitialProps() {
@@ -39,12 +39,37 @@ class GoalieIndex extends Component {
     return { goalies };
   }
 
-  handleChange = (e, { name, value }) => this.setState({ [name]: value });
-
-  renderList() {
+  async componentDidMount() {
+    const userAddresses = await web3.eth.getAccounts();
     const { goalies } = this.props;
 
-    const items = goalies.map(goalie => (
+    this.setState({ userAddresses, filteredGoalies: goalies });
+  }
+
+  handleChange = (e, { value }) => {
+    const { userAddresses } = this.state;
+
+    this.setState({ filterRole: value });
+    this.filterGoalies(userAddresses[0], value);
+  }
+
+  filterGoalies = (userAddress, filterRole) => {
+    const { goalies } = this.props;
+    if (filterRole !== 'all') {
+      const filteredGoalies = goalies.filter(goalie => userAddress === goalie.details[filterRole]);
+
+      this.setState({ filteredGoalies });
+    } else {
+      this.setState({ filteredGoalies: goalies });
+    }
+  }
+
+  renderList() {
+    const { filteredGoalies } = this.state;
+    const { goalies } = this.props;
+
+    const list = filteredGoalies || goalies;
+    const items = list.map(goalie => (
       {
         key: goalie.address,
         header: goalie.details.title,
@@ -68,7 +93,7 @@ class GoalieIndex extends Component {
   }
 
   render() {
-    const { filterOwn, filterFriends, filterBeneficiary } = this.state;
+    const { filterRole } = this.state;
 
     return (
       <Layout>
@@ -97,10 +122,20 @@ class GoalieIndex extends Component {
                       <Form.Field>
                         <Checkbox
                           toggle
+                          name="filterAll"
+                          label="All Goalies"
+                          value="all"
+                          checked={filterRole === 'all'}
+                          onChange={this.handleChange}
+                        />
+                      </Form.Field>
+                      <Form.Field>
+                        <Checkbox
+                          toggle
                           name="filterOwn"
                           label="My Goalies"
-                          value={!filterOwn}
-                          checked={filterOwn === true}
+                          value="owner"
+                          checked={filterRole === 'owner'}
                           onChange={this.handleChange}
                         />
                       </Form.Field>
@@ -109,8 +144,8 @@ class GoalieIndex extends Component {
                           toggle
                           name="filterFriends"
                           label="Friends' Goalies"
-                          value={!filterFriends}
-                          checked={filterFriends === true}
+                          value="friend"
+                          checked={filterRole === 'friend'}
                           onChange={this.handleChange}
                         />
                       </Form.Field>
@@ -119,8 +154,8 @@ class GoalieIndex extends Component {
                           toggle
                           name="filterBeneficiary"
                           label="Benficiary Goalies"
-                          value={filterBeneficiary}
-                          checked={filterBeneficiary}
+                          value="beneficiary"
+                          checked={filterRole === 'beneficiary'}
                           onChange={this.handleChange}
                         />
                       </Form.Field>
