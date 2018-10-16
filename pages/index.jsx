@@ -55,12 +55,11 @@ class GoalieIndex extends Component {
 
   filterGoalies = (userAddress, filterRole) => {
     const { goalies } = this.props;
-    if (filterRole !== 'all') {
-      const filteredGoalies = goalies.filter(goalie => userAddress === goalie.details[filterRole]);
-
-      this.setState({ filteredGoalies });
-    } else {
+    if (filterRole === 'all') {
       this.setState({ filteredGoalies: goalies });
+    } else {
+      const filteredGoalies = goalies.filter(goalie => userAddress === goalie.details[filterRole]);
+      this.setState({ filteredGoalies });
     }
   }
 
