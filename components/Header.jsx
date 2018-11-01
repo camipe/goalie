@@ -2,7 +2,10 @@ import React from 'react';
 import { Menu, Container, Icon } from 'semantic-ui-react';
 import { Link } from '../routes';
 
-export default () => (
+/**
+ * Renders the navigation bar
+ */
+const Header = () => (
   <Menu size="huge" fixed="top">
     <Container>
       <Menu.Item
@@ -19,3 +22,5 @@ export default () => (
     </Container>
   </Menu>
 );
+
+export default Header;

@@ -10,6 +10,9 @@ const propTypes = {
   complete: PropTypes.bool.isRequired,
 };
 
+/**
+ * GoalieStatus renders the approval and completed status with some nice icons.
+ */
 const GoalieStatus = (props) => {
   const { approval, complete } = props;
 

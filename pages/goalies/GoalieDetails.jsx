@@ -15,6 +15,16 @@ import { Router } from '../../routes';
 import web3 from '../../ethereum/web3';
 import Goalie from '../../ethereum/goalie';
 
+const propTypes = {
+  details: PropTypes.objectOf(PropTypes.any).isRequired,
+  amount: PropTypes.number.isRequired,
+  address: PropTypes.string.isRequired,
+};
+
+/**
+ * GoalieDetails is a page component. It renders the details of a goalie but also
+ * a menu enabling users to approve and complete goalies.
+ */
 class GoalieDetails extends Component {
   state = {
     loadingApprove: false,
@@ -35,23 +45,18 @@ class GoalieDetails extends Component {
     return { address, amount, details };
   }
 
-  static propTypes = {
-    details: PropTypes.objectOf(PropTypes.any).isRequired,
-    amount: PropTypes.number.isRequired,
-    address: PropTypes.string.isRequired,
-  }
-
-  async componentWillMount() {
+  async componentDidMount() {
     const { details } = this.props;
     let role;
 
     const accounts = await web3.eth.getAccounts();
 
+    // comparing the user's address to the goalie's different roles
     if (accounts[0] === details.owner) {
       role = 'owner';
     } else if (accounts[0] === details.beneficiary) {
       role = 'beneficiary';
-    } else if (details.friend) {
+    } else if (accounts[0] === details.friend) {
       role = 'friend';
     } else {
       role = '';
@@ -60,6 +65,9 @@ class GoalieDetails extends Component {
     this.setState({ role });
   }
 
+  /**
+   * Function to update the approval status on the blockchain.
+   */
   handleApproval = async (event) => {
     event.preventDefault();
     const { address } = this.props;
@@ -78,6 +86,9 @@ class GoalieDetails extends Component {
     this.setState({ loadingApprove: false });
   }
 
+  /**
+   * Function to update the completed status on the blockchain.
+   */
   handleComplete = async (event) => {
     event.preventDefault();
     const { address } = this.props;
@@ -154,5 +165,7 @@ class GoalieDetails extends Component {
     );
   }
 }
+
+GoalieDetails.propTypes = propTypes;
 
 export default withRouter(GoalieDetails);

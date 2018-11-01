@@ -12,6 +12,9 @@ const defaultProps = {
   children: null,
 };
 
+/**
+ * Renders the main layout and loads semantic-ui CSS file.
+ */
 const Layout = (props) => {
   const { children } = props;
 

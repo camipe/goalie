@@ -7,7 +7,7 @@ import GoalieStatus from './GoalieStatus';
 
 const propTypes = {
   details: PropTypes.objectOf(PropTypes.any).isRequired,
-  role: PropTypes.string,
+  role: PropTypes.string.isRequired,
   loadingApprove: PropTypes.bool.isRequired,
   loadingComplete: PropTypes.bool.isRequired,
   errorMessage: PropTypes.string.isRequired,
@@ -15,10 +15,10 @@ const propTypes = {
   handleComplete: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  role: '',
-};
-
+/**
+ * GoalieMenu renders a menu where the user can see goalie status and
+ * click on buttons to approve or complete the goalie.
+ */
 const GoalieMenu = (props) => {
   const {
     details,
@@ -30,7 +30,7 @@ const GoalieMenu = (props) => {
     role,
   } = props;
 
-  // check deadline and such things to determine if approve button should be disabled
+  // check deadline and statuses to determine if approve button should be disabled
   let disableApproval;
   if (parseInt(details.deadline, 10) * 1000 > new Date().getTime()) {
     if (details.approval || details.complete) {
@@ -42,7 +42,7 @@ const GoalieMenu = (props) => {
     disableApproval = true;
   }
 
-  // check deadline and such things to determine if complete button should be disabled
+  // check deadline and statuses if complete button should be disabled
   let disableComplete;
   if (parseInt(details.deadline, 10) * 1000 <= new Date().getTime()) {
     if (details.approval || !details.complete) {
@@ -78,6 +78,5 @@ const GoalieMenu = (props) => {
 };
 
 GoalieMenu.propTypes = propTypes;
-GoalieMenu.defaultProps = defaultProps;
 
 export default GoalieMenu;

@@ -8,6 +8,10 @@ const propTypes = {
   details: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
+/**
+ * GoalieSummary renders a summarized version of a goalie.
+ * Used to present goalies in a list.
+ */
 const GoalieSummary = (props) => {
   const { address, details } = props;
 

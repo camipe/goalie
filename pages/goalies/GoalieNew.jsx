@@ -6,6 +6,10 @@ import { withRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import GoalieForm from '../../components/GoalieForm';
 
+/**
+ * GoalieNew is a page component. It renders a form and instructions for the user to
+ * create a new goalie on the blockchain.
+ */
 const GoalieNew = () => (
   <Layout>
     <Grid>
@@ -38,11 +42,5 @@ const GoalieNew = () => (
     </Grid>
   </Layout>
 );
-// class GoalieNew extends Component {
-//   render() {
-//     return (
-//     );
-//   }
-// }
 
 export default withRouter(GoalieNew);

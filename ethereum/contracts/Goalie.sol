@@ -5,10 +5,16 @@ contract GoalieFactory {
   
   address[] public goalies;
 
+  /** @dev Public function for returning addresses of all goalies
+  *
+  */
   function getGoalies() external view returns (address[]) {
     return goalies;
   }
 
+  /** @dev Public function for creating new goalies
+  *
+  */
   function createGoalie(        
         string _title, 
         string _description,
