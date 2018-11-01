@@ -96,14 +96,18 @@ class GoalieIndex extends Component {
   }
 
   render() {
-    const { filterRole } = this.state;
+    const { filterRole, filteredGoalies } = this.state;
 
     return (
       <Layout>
         <Grid>
           <Grid.Row columns="2">
             <Grid.Column width="12">
-              { this.renderList()}
+              {
+                (filteredGoalies && filteredGoalies.length)
+                  ? this.renderList()
+                  : <span>There are no goalies to display.</span>
+              }
             </Grid.Column>
             <Grid.Column width="4">
               <Link route="/new">
