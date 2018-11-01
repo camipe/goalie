@@ -13,12 +13,16 @@ import web3 from '../ethereum/web3';
 import GoalieFactory from '../ethereum/factory';
 import Goalie from '../ethereum/goalie';
 import Layout from '../components/Layout';
-import GoalieStatus from '../components/GoalieStatus';
+import GoalieSummary from '../components/GoalieSummary';
 
 const propTypes = {
   goalies: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
+/**
+ * GoalieIndex is the main page of the application. It displays a list of all goalies.
+ * Users can also filter the list to only show goalies related to them.
+ */
 class GoalieIndex extends Component {
   state = {
     filterRole: 'all',
@@ -47,6 +51,9 @@ class GoalieIndex extends Component {
     this.setState({ userAddresses, filteredGoalies: goalies });
   }
 
+  /**
+   * Function used to update state when a user changes the filter setting.
+   */
   handleChange = (e, { value }) => {
     const { userAddresses } = this.state;
 
@@ -54,6 +61,9 @@ class GoalieIndex extends Component {
     this.filterGoalies(userAddresses[0], value);
   }
 
+  /**
+   * Function which filter the list of goalies depending on the users setting.
+   */
   filterGoalies = (userAddress, filterRole) => {
     const { goalies } = this.props;
     if (filterRole === 'all') {
@@ -64,35 +74,20 @@ class GoalieIndex extends Component {
     }
   }
 
+  /**
+   * Function used to render a list of the goalies.
+   */
   renderList() {
     const { filteredGoalies } = this.state;
     const { goalies } = this.props;
 
     const list = filteredGoalies || goalies;
-    const items = list.map(goalie => (
-      {
-        key: goalie.address,
-        header: goalie.details.title,
-        meta: `deployed at ${goalie.address}`,
-        description: (
-          <div>
-            <div style={{ marginBottom: '1em' }}>
-              {goalie.details.description}
-            </div>
-            <GoalieStatus approval={goalie.details.approval} complete={goalie.details.complete} />
-          </div>
-        ),
-        extra: (
-          <Link route={`/details/${goalie.address}`}>
-            <a>View details</a>
-          </Link>
-        ),
-        fluid: true,
-      }
+    const goalieList = list.map(goalie => (
+      <GoalieSummary key={goalie.address} address={goalie.address} details={goalie.details} />
     ));
 
 
-    return <Card.Group items={items} />;
+    return goalieList;
   }
 
   render() {

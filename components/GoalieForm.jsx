@@ -8,6 +8,9 @@ import moment from 'moment';
 import GoalieFactory from '../ethereum/factory';
 import web3 from '../ethereum/web3';
 
+/**
+ * GoalieForm is used to show a form where users can add a new goalie to the blockchain
+ */
 class GoalieForm extends Component {
   state = {
     title: '',
@@ -20,6 +23,9 @@ class GoalieForm extends Component {
     loading: false,
   }
 
+  /**
+   * Function for doing the actual submit and starting a transaction on ethereum
+   */
   handleSubmit = async (event) => {
     const {
       title, description, friend, beneficiary, deadline, amount,
@@ -55,6 +61,7 @@ class GoalieForm extends Component {
     const {
       title, description, friend, beneficiary, deadline, amount, errorMessage, loading,
     } = this.state;
+
     return (
       <Card fluid>
         <Card.Content>
