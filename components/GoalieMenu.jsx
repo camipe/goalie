@@ -1,12 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Statistic,
-  Card,
-  Button,
-  Message,
-  Icon,
+  Card, Button, Message,
 } from 'semantic-ui-react';
+import GoalieStatus from './GoalieStatus';
 
 const propTypes = {
   details: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -33,7 +30,7 @@ const GoalieMenu = (props) => {
     role,
   } = props;
 
-  // check deadline such things to determine if approve button should be disabled
+  // check deadline and such things to determine if approve button should be disabled
   let disableApproval;
   if (parseInt(details.deadline, 10) * 1000 > new Date().getTime()) {
     if (details.approval || details.complete) {
@@ -45,7 +42,7 @@ const GoalieMenu = (props) => {
     disableApproval = true;
   }
 
-  // check deadline such things to determine if complete button should be disabled
+  // check deadline and such things to determine if complete button should be disabled
   let disableComplete;
   if (parseInt(details.deadline, 10) * 1000 <= new Date().getTime()) {
     if (details.approval || !details.complete) {
@@ -61,20 +58,7 @@ const GoalieMenu = (props) => {
     <Card fluid>
       <Card.Content extra>
         <Card.Header>Status</Card.Header>
-        <Statistic.Group size="small" widths="two" style={{ paddingTop: '0.5em', paddingBottom: '1em' }}>
-          <Statistic color={details.approval ? 'green' : 'red'}>
-            <Statistic.Value>
-              {details.approval ? <Icon name="checkmark" /> : <Icon name="delete" />}
-            </Statistic.Value>
-            <Statistic.Label>Approved</Statistic.Label>
-          </Statistic>
-          <Statistic color={details.complete ? 'green' : 'red'}>
-            <Statistic.Value>
-              {details.complete ? <Icon name="checkmark" /> : <Icon name="delete" />}
-            </Statistic.Value>
-            <Statistic.Label>Completed</Statistic.Label>
-          </Statistic>
-        </Statistic.Group>
+        <GoalieStatus approval={details.approval} complete={details.complete} />
         {role === 'friend'
           ? (
             <Button fluid color="green" disabled={disableApproval} loading={loadingApprove} onClick={handleApproval} style={{ marginBottom: '0.8em' }}>

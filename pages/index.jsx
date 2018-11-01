@@ -13,6 +13,7 @@ import web3 from '../ethereum/web3';
 import GoalieFactory from '../ethereum/factory';
 import Goalie from '../ethereum/goalie';
 import Layout from '../components/Layout';
+import GoalieStatus from '../components/GoalieStatus';
 
 const propTypes = {
   goalies: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -75,7 +76,10 @@ class GoalieIndex extends Component {
         meta: `deployed at ${goalie.address}`,
         description: (
           <div>
-            {goalie.details.description}
+            <div style={{ marginBottom: '1em' }}>
+              {goalie.details.description}
+            </div>
+            <GoalieStatus approval={goalie.details.approval} complete={goalie.details.complete} />
           </div>
         ),
         extra: (
