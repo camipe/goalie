@@ -86,13 +86,13 @@ contract Goalie {
   *
   */
   function completeGoal() public deadlinePassed() {
-    require(msg.sender == details.owner || msg.sender == details.beneficiary);
-
-    if (details.approval && !details.complete) {
+    if (msg.sender == details.owner && details.approval && !details.complete) {
+      require(msg.sender == details.owner);
       // pay out to the owner if the goal is approved but not completed
       details.complete = true;
       details.owner.transfer(address(this).balance);
     } else if (!details.approval && !details.complete) {
+      require(msg.sender == details.beneficiary);
       // pay out to beneficiary if the goal is not approved and not completed
       details.complete = true;
       details.beneficiary.transfer(address(this).balance);

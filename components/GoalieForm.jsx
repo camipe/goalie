@@ -7,6 +7,7 @@ import { withRouter } from 'next/router';
 import moment from 'moment';
 import GoalieFactory from '../ethereum/factory';
 import web3 from '../ethereum/web3';
+import { Router } from '../routes';
 
 /**
  * GoalieForm is used to show a form where users can add a new goalie to the blockchain
@@ -45,6 +46,7 @@ class GoalieForm extends Component {
           from: accounts[0],
           value: web3.utils.toWei(amount, 'ether'),
         });
+      Router.pushRoute('index');
     } catch (error) {
       this.setState({ errorMessage: error.message });
     }
