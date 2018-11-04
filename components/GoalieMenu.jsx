@@ -32,14 +32,10 @@ const GoalieMenu = (props) => {
 
   // check deadline and statuses to determine if approve button should be disabled
   let disableApproval;
-  if (parseInt(details.deadline, 10) * 1000 > new Date().getTime()) {
-    if (details.approval || details.complete) {
-      disableApproval = true;
-    } else {
-      disableApproval = false;
-    }
-  } else {
+  if (details.approval || details.complete) {
     disableApproval = true;
+  } else {
+    disableApproval = false;
   }
 
   // check deadline and statuses if complete button should be disabled
