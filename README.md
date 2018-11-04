@@ -40,8 +40,9 @@ The current design is faster, there is less lines of code and it's much easier t
 
 ## Testing
 See test documentation
-* Test report 
-* Test cases
+* [Test report](https://github.com/camipe/goalie/wiki/Test-report)
+* [Remix test cases](https://github.com/camipe/goalie/wiki/Remix-test-cases)
+* [Frontend test cases](https://github.com/camipe/goalie/wiki/Frontend-test-cases)
 
 ## Run locally
 Note: to fully use the application the browser plugin [MetaMask](https://metamask.io/) is required.
